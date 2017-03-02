@@ -1,0 +1,30 @@
+﻿<div id="upload-details-item-template" data-win-control="WinJS.Binding.Template"
+     style="display: none">
+    <div class="listview-item">
+        <div class="track-id" data-win-bind="textContent: Id"></div>
+        <h5 class="win-h5 track-name" data-win-bind="textContent: Name"></h5>
+        <p class="track-artists" data-win-bind="textContent: Artists"></p>
+        <p class="track-album" data-win-bind="textContent: Album"></p>
+    </div>
+</div>
+<div class="row uploaded">
+    <div class="col-md-5 album-cover">
+        <img id="cover-img" alt="" src=""/>
+        <div class="inner-circle"></div>
+    </div>
+    <div class="col-md-7 upload-details">
+        <div id="upload-details-listview"
+             class="win-selectionstylefilled"
+             data-win-control="WinJS.UI.ListView"
+             data-win-options="{
+                itemTemplate: select('#upload-details-item-template'),
+                selectionMode: 'none',
+                tapBehavior: 'none',
+                layout: { type: WinJS.UI.ListLayout }
+             }">
+        </div>
+    </div>
+</div>
+<div class="row uploader">
+    <div class="col-md-12" id="uploader-container"></div>
+</div>

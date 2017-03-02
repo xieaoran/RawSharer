@@ -1,0 +1,28 @@
+﻿.upload-module .album-cover {
+    margin: 0 50px;
+    width: 600px !important;
+}
+
+.upload-module .album-cover > #cover-img {
+    width: 500px;
+    height: 500px;
+    border-radius: 250px;
+    -moz-border-radius: 250px;
+    -webkit-border-radius: 250px;
+    animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+}
+
+.upload-module .album-cover > .inner-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    top: -304px;
+    left: 200px;
+    background-color: #212121;
+}

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RawSharer</title>
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/winjs")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/fine-uploader")
+    <script type="text/template" id="qq-template">
+        @{Html.RenderAction("Template", "Upload");}
+    </script>
+
+    <script src="https://use.fontawesome.com/a3146fd8d6.js"></script>
+</head>
+<body>
+    <div class="splitView" data-win-control="WinJS.UI.SplitView">
+        <div id="pane">
+            <div class="header">
+                <button class="win-splitviewpane-toggle"
+                        data-win-control="WinJS.UI.SplitViewPaneToggle"
+                        data-win-options="{ splitView: select('.splitView') }"></button>
+                <div class="title">RawSharer Demo</div>
+            </div>
+
+            <div class="nav-commands">
+                <div onclick="Base.Navigation.GoToIndex();" data-win-control="WinJS.UI.NavBarCommand" data-win-options="{ label: '首页', icon: 'home'}"></div>
+                <div onclick="Base.Navigation.GoToPlayBack();" data-win-control="WinJS.UI.NavBarCommand" data-win-options="{ label: '正在播放', icon: 'play'}"></div>
+                <div onclick="Base.Navigation.GotoUpload();" data-win-control="WinJS.UI.NavBarCommand" data-win-options="{ label: '上传', icon: 'upload'}"></div>
+            </div>
+        </div>
+        <div id="content">
+            <div class="container-fluid">
+                <div class="row first-row">
+                    <div class="col-md-12">
+                        <h1 class="win-h1 name">RawSharer</h1>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="pageRenderControl"></div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/rawsharer")
+    <script type="text/javascript">
+        Base.Load();
+    </script>
+</body>
+</html>

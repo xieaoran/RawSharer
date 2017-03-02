@@ -1,0 +1,136 @@
+@keyframes rotate-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes rotate-animation {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes rotate-animation {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+@-o-keyframes rotate-animation {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(360deg);
+    }
+}
+@keyframes scale-animation {
+    0%{
+        transform: scale(3,3);
+    }
+    100%{
+        transform: none;
+    }
+}
+@-moz-keyframes scale-animation {
+    0%{
+        -moz-transform: scale(3,3);
+    }
+    100%{
+        -moz-transform: none;
+    }
+}
+@-webkit-keyframes scale-animation {
+    0%{
+        -webkit-transform: scale(3,3);
+    }
+    100%{
+        -webkit-transform: none;
+    }
+}
+@-o-keyframes scale-animation {
+    0%{
+        -o-transform: scale(3,3);
+    }
+    100%{
+        -o-transform: none;
+    }
+}
+@keyframes ease-animation {
+    0%{
+        opacity: 1;
+    }
+    35%{
+        opacity: 0;
+    }
+    70%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@-moz-keyframes ease-animation {
+    0%{
+        -moz-opacity: 1;
+    }
+    35%{
+        -moz-opacity: 0;
+    }
+    70%{
+        -moz-opacity: 1;
+    }
+    100%{
+        -moz-opacity: 1;
+    }
+}
+@-webkit-keyframes ease-animation {
+    0%{
+        opacity: 1;
+    }
+    35%{
+        opacity: 0;
+    }
+    70%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@-o-keyframes ease-animation {
+    0%{
+        opacity: 1;
+    }
+    35%{
+        opacity: 0;
+    }
+    70%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.animation-running{
+    animation-play-state: running !important;
+    -moz-animation-play-state: running !important;
+    -webkit-animation-play-state: running !important;
+    -o-animation-play-state: running !important;
+}
+.animation-paused{
+    animation-play-state: paused !important;
+    -moz-animation-play-state: paused !important;
+    -webkit-animation-play-state: paused !important;
+    -o-animation-play-state: paused !important;
+}

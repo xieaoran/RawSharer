@@ -1,0 +1,115 @@
+.playback .album-cover {
+    margin: 0 50px;
+    width: 600px !important;
+}
+
+.playback .album-cover > #cover-img {
+    width: 500px;
+    height: 500px;
+    -moz-border-radius: 250px;
+    -webkit-border-radius: 250px;
+    border-radius: 250px;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+}
+
+.playblack .album-cover > #cover-img.song-playing {
+    -moz-animation: rotate-animation 10s linear infinite;
+    -webkit-animation: rotate-animation 10s linear infinite;
+    -o-animation: rotate-animation 10s linear infinite;
+}
+
+.playblack .album-cover > .inner-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    top: -304px;
+    left: 200px;
+    background-color: #212121;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon {
+    cursor: pointer;
+    font-size: 50px;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon.state-switching {
+    -moz-animation: scale-animation 400ms ease-out 1;
+    -webkit-animation: scale-animation 400ms ease-out 1;
+    -o-animation: scale-animation 400ms ease-out 1;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon.state-switched {
+    -moz-animation: ease-animation 2s linear infinite;
+    -webkit-animation: ease-animation 2s linear infinite;
+    -o-animation: ease-animation 2s linear infinite;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon.fa-pause {
+    margin: 25px 28px;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon.fa-play {
+    margin: 25px 30px;
+}
+
+.playblack .album-cover > .inner-circle > #player-icon.fa-stop {
+    margin: 25px 28px;
+}
+
+.playblack .song-details .row {
+    margin-bottom: 10px;
+}
+
+.playblack .song-details .fa-user {
+    float: left;
+    margin-right: 5px;
+    font-size: 15px;
+    line-height: 1.333;
+}
+
+.playblack .song-details .fa-dot-circle-o {
+    float: left;
+    margin-right: 5px;
+    font-size: 15px;
+    line-height: 1.333;
+}
+
+.playblack .song-details .separator {
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.playblack .song-details #song-artist {
+    float: left;
+    font-weight: bold;
+}
+
+.playblack .song-details #song-album {
+    float: left;
+}
+
+.playblack .song-details audio {
+    width: 540px;
+}
+
+.playblack .song-details .lyricBorder {
+    height: 327px;
+    width: 540px;
+    overflow: hidden;
+}
+
+.playback .song-details .lyricBorder #lyricContainer {
+    position: relative;
+    word-break: normal;
+    font-family: "Segoe UI", "Microsoft YaHei UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
+}
+
+.playback .song-details .lyricBorder #lyricContainer p {
+    height: 21px;
+}

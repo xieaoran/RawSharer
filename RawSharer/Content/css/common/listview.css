@@ -1,0 +1,25 @@
+/*
+ * Created by Robert Xie
+ * All Rights Reserved
+ */
+
+.listview-item
+{
+    display: block;
+    width: 100%;
+    padding: 10px 5px;
+    overflow: hidden;
+}
+
+.listview-item p{
+    margin: 0;
+}
+
+.listview
+{
+    height: 300px;
+}
+
+.win-container:hover{
+    background-color: #cdcdcd;
+}
