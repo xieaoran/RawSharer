@@ -122,15 +122,16 @@
     }
 }
 
-.animation-running{
-    animation-play-state: running !important;
+.animation-running {
     -moz-animation-play-state: running !important;
     -webkit-animation-play-state: running !important;
     -o-animation-play-state: running !important;
+    animation-play-state: running !important;
 }
-.animation-paused{
-    animation-play-state: paused !important;
+
+.animation-paused {
     -moz-animation-play-state: paused !important;
     -webkit-animation-play-state: paused !important;
     -o-animation-play-state: paused !important;
+    animation-play-state: paused !important;
 }

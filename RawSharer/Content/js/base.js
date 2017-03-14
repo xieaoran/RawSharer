@@ -17,7 +17,7 @@ WinJS.Namespace.defineWithParent(Base, "Controls", {
 
 WinJS.Namespace.defineWithParent(Base, "Pages", {
     Index: WinJS.UI.Pages.define("./Pages/Home/Index"),
-    PlayBack: WinJS.UI.Pages.define("./Pages/PlayBack/Track/12F342B0-8288-49D6-815F-8B590073B164", {
+    PlayBack: WinJS.UI.Pages.define("./Pages/PlayBack/Track/243B32FD-2280-4D34-8F1B-B38DAE27920A", {
         ready: function(element, options) {
             PlayBack.Load();
         }
@@ -38,7 +38,7 @@ WinJS.Namespace.defineWithParent(Base, "Pages", {
                     }
                 },
                 validation: {
-                    allowedExtensions: ["jpeg", "jpg", "gif", "png"]
+                    allowedExtensions: ["wav", "flac", "ape", "tak", "tta"]
                 }
             });
         }

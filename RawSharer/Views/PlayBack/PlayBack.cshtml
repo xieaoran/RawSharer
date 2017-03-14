@@ -1,9 +1,9 @@
 ﻿@model RawSharer.ViewModels.PlayBackViewModel
-<div class="row playback">
+<div class="playback row">
     <div class="col-md-5 album-cover">
         <img id="cover-img" alt="@Model.SenderAlbum.Name"
              src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.SenderAlbum.Image.Id} })" />
-        <div class="inner-circle">
+        <div class="cover-circle">
             <i id="player-icon" class="fa" onclick="PlayBack.Player.SwitchState();"></i>
         </div>
     </div>

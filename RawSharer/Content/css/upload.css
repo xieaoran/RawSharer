@@ -14,15 +14,3 @@
     -webkit-animation-iteration-count: infinite;
     -o-animation-iteration-count: infinite;
 }
-
-.upload-module .album-cover > .inner-circle {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    -moz-border-radius: 50px;
-    -webkit-border-radius: 50px;
-    border-radius: 50px;
-    top: -304px;
-    left: 200px;
-    background-color: #212121;
-}

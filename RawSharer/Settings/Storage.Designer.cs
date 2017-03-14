@@ -61,7 +61,7 @@ namespace RawSharer.Settings {
         }
         
         /// <summary>
-        ///   查找类似 C:\WorkSpace\Codes\Current\rawsharer\RawSharer\Demo\{0}\{1} 的本地化字符串。
+        ///   查找类似 D:\WorkSpace\Codes\Current\rawsharer\RawSharer\Demo\{0}\{1} 的本地化字符串。
         /// </summary>
         internal static string PathFormat {
             get {
