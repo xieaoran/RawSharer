@@ -6,14 +6,14 @@ var RawSharer;
         (function (UI) {
             var Controls;
             (function (Controls) {
+                var BrowserType = RawSharer.Enums.BrowserType;
                 var LyricsContainer = (function () {
                     function LyricsContainer(lyricsContainerId) {
                         this.containerFront = $("#" + lyricsContainerId);
                     }
                     LyricsContainer.prototype.writeLine = function (index, content) {
-                        //TODO: Check if "const" causes bugs here.
                         var contentPara = document.createElement("p");
-                        if (RawSharer.Helpers.Environment.browser === "Firefox") {
+                        if (RawSharer.Helpers.Environment.browser === BrowserType.Firefox) {
                             if (content === undefined)
                                 contentPara.innerHTML = "<br/>";
                             else
@@ -36,8 +36,17 @@ var RawSharer;
                         this.containerFront.stop();
                         this.containerFront.animate({ "top": 140 - currentIndex * 35 }, "fast", "easeOutCubic");
                     };
+                    LyricsContainer.prototype.attachEvent = function (mouseSeek, keyboardSeek) {
+                        if (RawSharer.Helpers.Environment.browser === BrowserType.Firefox)
+                            document.addEventListener("DOMMouseScroll", function (e) { return mouseSeek(e); }, false);
+                        else {
+                            document.onmousewheel = function (e) { return mouseSeek(e); };
+                        }
+                        document.onkeydown = function (e) { return keyboardSeek(e); };
+                    };
                     return LyricsContainer;
                 }());
+                Controls.LyricsContainer = LyricsContainer;
             })(Controls = UI.Controls || (UI.Controls = {}));
         })(UI = PlayBack.UI || (PlayBack.UI = {}));
     })(PlayBack = RawSharer.PlayBack || (RawSharer.PlayBack = {}));

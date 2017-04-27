@@ -2,6 +2,7 @@ var RawSharer;
 (function (RawSharer) {
     var Helpers;
     (function (Helpers) {
+        var BrowserType = RawSharer.Enums.BrowserType;
         var Environment = (function () {
             function Environment() {
             }
@@ -9,11 +10,11 @@ var RawSharer;
                 get: function () {
                     if (this.innerBrowser == undefined) {
                         if (navigator.userAgent.indexOf("MSIE") >= 0)
-                            this.innerBrowser = "MSIE";
+                            this.innerBrowser = BrowserType.MSIE;
                         else if (navigator.userAgent.indexOf("Firefox") >= 0)
-                            this.innerBrowser = "Firefox";
+                            this.innerBrowser = BrowserType.Firefox;
                         else
-                            this.innerBrowser = "WebKit";
+                            this.innerBrowser = BrowserType.Webkit;
                     }
                     return this.innerBrowser;
                 },

@@ -1,7 +1,7 @@
-﻿namespace RawSharer.PlayBack.UI.Controls {
+﻿namespace RawSharer.PlayBack.UI.Controls.Playing {
     import PlayerState = Enums.PlayerState;
 
-    class StateIndicator {
+    export class StateIndicator {
         private playerIconFront: JQuery;
         private coverImgFront: JQuery;
 
@@ -12,7 +12,7 @@
             this.coverImgFront = $(`#${coverImgId}`);
         }
 
-        public playing() {
+        public playing(): void {
             this.coverImgFront.removeClass("animation-paused");
             this.coverImgFront.addClass("animation-running");
             this.playerIconFront.removeClass("fa-stop fa-pause animation-running state-switching state-switched");
@@ -22,7 +22,7 @@
             }, 400);
         }
 
-        public paused(ended: boolean) {
+        public paused(ended: boolean): void {
             this.playerIconFront.removeClass("fa-play animation-running state-switching");
             if (ended) this.stopped();
             else {
@@ -36,7 +36,7 @@
             }
         }
 
-        public stopped() {
+        public stopped(): void {
             this.playerIconFront.addClass("fa-stop animation-running state-switching");
             this.coverImgFront.removeClass("animation-running");
             this.coverImgFront.addClass("animation-paused");
@@ -45,7 +45,7 @@
             }, 400);
         }
 
-        public seeking(currentState: PlayerState) {
+        public seeking(currentState: PlayerState): void {
             if (this.pauseTimeOut) clearTimeout(this.pauseTimeOut);
             if (currentState === PlayerState.Playing) {
                 this.playerIconFront.removeClass("fa-pause animation-running state-switching state-switched");

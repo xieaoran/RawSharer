@@ -299,11 +299,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Content\ts\Common\Network\Downloader.ts" />
+    <TypeScriptCompile Include="Content\ts\Enums\BrowserType.ts" />
     <TypeScriptCompile Include="Content\ts\Enums\PlayerState.ts" />
-    <TypeScriptCompile Include="Content\ts\Helpers\Environment.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Adapters\PageAdapter.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\LyricsContainer.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\StateIndicator.ts" />
+    <TypeScriptCompile Include="Content\ts\Common\Helpers\Environment.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\Core\Lyrics\Parser.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Playing\Player.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Page\PageAdapter.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Lyrics\Container.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Playing\StateIndicator.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>

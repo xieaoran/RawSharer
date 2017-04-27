@@ -62,6 +62,7 @@ var RawSharer;
                     };
                     return StateIndicator;
                 }());
+                Controls.StateIndicator = StateIndicator;
             })(Controls = UI.Controls || (UI.Controls = {}));
         })(UI = PlayBack.UI || (PlayBack.UI = {}));
     })(PlayBack = RawSharer.PlayBack || (RawSharer.PlayBack = {}));
