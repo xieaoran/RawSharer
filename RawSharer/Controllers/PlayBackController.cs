@@ -14,7 +14,7 @@ namespace RawSharer.Controllers
         {
             using (var dataContext = new DataContext())
             {
-                var track = dataContext.Tracks.FirstOrDefault(t => t.Id == id);
+                var track = dataContext.TracksQuery.FirstOrDefault(t => t.Id == id);
                 if (track == null) return HttpNotFound();
                 return View("PlayBack", new PlayBackViewModel(track));
             }

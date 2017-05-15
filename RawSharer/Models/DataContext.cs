@@ -14,26 +14,22 @@ namespace RawSharer.Models
         public DataContext() : base("name=RawSharerData")
         {
             Configuration.LazyLoadingEnabled = false;
-            LoadData();
         }
 
-        public void LoadData()
-        {
-            LocalBlobs.Load();
-            Genres.Load();
-            Artists.Include("Image")
-                .Load();
-            Albums.Include("Artists")
-                .Include("Genre")
-                .Include("Image")
-                .Load();
-            Tracks.Include("Albums")
-                .Include("Artists")
-                .Include("OriginalStorage")
-                .Include("ConvertedStorage")
-                .Include("Lyrics")
-                .Load();
-        }
+        public IQueryable<LocalBlob> LocalBlobsQuery => LocalBlobs;
+        public IQueryable<Genre> GenresQuery => Genres;
+        public IQueryable<Artist> ArtistsQuery => Artists.Include("Image");
+
+        public IQueryable<Album> AlbumsQuery => Albums.Include("Artists")
+            .Include("Genre")
+            .Include("Image");
+
+        public IQueryable<Track> TracksQuery => Tracks.Include("Albums")
+            .Include("Albums.Artists").Include("Albums.Genre").Include("Albums.Image")
+            .Include("Artists").Include("Artists.Image")
+            .Include("OriginalStorage")
+            .Include("ConvertedStorage")
+            .Include("Lyrics");
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -65,12 +61,6 @@ namespace RawSharer.Models
                 .HasOptional(artist => artist.Image);
             modelBuilder.Entity<Album>()
                 .HasOptional(album => album.Image);
-            modelBuilder.Entity<Track>()
-                .HasOptional(track => track.OriginalStorage);
-            modelBuilder.Entity<Track>()
-                .HasOptional(track => track.ConvertedStorage);
-            modelBuilder.Entity<Track>()
-                .HasOptional(track => track.Lyrics);
             base.OnModelCreating(modelBuilder);
         }
         public virtual DbSet<Album> Albums { get; set; }

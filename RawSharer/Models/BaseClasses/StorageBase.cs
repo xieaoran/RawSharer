@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Runtime.Serialization;
 using RawSharer.Helpers;
 
 namespace RawSharer.Models.BaseClasses
@@ -22,6 +21,7 @@ namespace RawSharer.Models.BaseClasses
         public string ContentType { get; protected set; }
         public string Md5Hash { get; protected set; }
         public long Length { get; protected set; }
+
         public abstract Stream GetReadStream();
         public abstract Stream GetWriteStream();
         public string GetMd5Hash()

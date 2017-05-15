@@ -8,27 +8,25 @@ namespace RawSharer.Models.Music
     public class Artist
     {
         [Key]
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         [Required]
-        public string Name { get; private set; }
-        public string Biography { get; private set; }
-        public LocalBlob Image { get; private set; }
-        public ICollection<Album> Albums { get; private set; }
-        public ICollection<Track> Tracks { get; private set; }
+        public string Name { get; set; }
+        public string Biography { get; set; }
 
-        public Artist(string name, string biography = null, LocalBlob image = null)
+        public virtual LocalBlob Image { get; set; }
+        public virtual ICollection<Album> Albums { get; set; }
+        public virtual ICollection<Track> Tracks { get; set; }
+
+        public Artist(string name, string biography = null)
         {
             Id = Guid.NewGuid();
             Name = name;
-            Image = image;
             Biography = biography;
-            Albums = new List<Album>();
-            Tracks = new List<Track>();
         }
 
         public Artist()
         {
-            // Reserved for DataContext
+            // Reserved for Serialization
         }
     }
 }

@@ -1,20 +1,22 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Web;
-using RawSharer.Helpers;
+using RawSharer.Configs;
 using RawSharer.Models.BaseClasses;
 
 namespace RawSharer.Models.Storage
 {
     public class LocalBlob : StorageBase
     {
-        public string FileName { get; private set; }
+        public string FileName { get; set; }
 
-        [IgnoreDataMember]
-        public string AbsolutePath
-            => string.Format(Settings.Storage.PathFormat, Id, FileName);
+        [NotMapped]
+        public string AbsolutePath => Path.Combine(RuntimeConfig.Config.LocalStorage.RootPath,
+            Id.ToString(), FileName);
+
         public sealed override Stream GetReadStream()
         {
             return File.OpenRead(AbsolutePath);

@@ -7,22 +7,21 @@ namespace RawSharer.Models.Music
     public class Genre
     {
         [Key]
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         [Required]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public ICollection<Album> Albums { get; private set; }
+        public virtual ICollection<Album> Albums { get; set; }
 
         public Genre(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
-            Albums = new List<Album>();
         }
 
         public Genre()
         {
-            // Reserved for DataContext
+            // Reserved for Serialization
         }
     }
 }
