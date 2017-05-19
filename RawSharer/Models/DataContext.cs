@@ -4,6 +4,7 @@ using RawSharer.Models.Music;
 using RawSharer.Models.Storage;
 using System.Data.Entity;
 using System.Linq;
+using RawSharer.Models.Lyrics;
 
 namespace RawSharer.Models
 {
@@ -57,7 +58,7 @@ namespace RawSharer.Models
             modelBuilder.Entity<TrackVersion>()
                 .HasOptional(version => version.ConvertedStorage);
 
-            modelBuilder.Entity<Lyrics>()
+            modelBuilder.Entity<Lyrics.Lyrics>()
                 .HasMany(lyrics => lyrics.Sentences)
                 .WithOptional(lyricsSentence => lyricsSentence.Lyrics);
 
@@ -68,7 +69,7 @@ namespace RawSharer.Models
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<TrackVersion> TrackVersions { get; set; }
-        public virtual DbSet<Lyrics> Lyrics { get; set; }
+        public virtual DbSet<Lyrics.Lyrics> Lyrics { get; set; }
         public virtual DbSet<LyricsSentence> LyricsSentences { get; set; }
         public virtual DbSet<LocalBlob> LocalBlobs { get; set; }
     }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using RawSharer.Models.BaseClasses;
 
-namespace RawSharer.Models.Music
+namespace RawSharer.Models.Lyrics
 {
     public class LyricsSentence : Entity
     {
@@ -15,20 +15,20 @@ namespace RawSharer.Models.Music
         [Required]
         public TimeSpan Duration { get; set; }
         [Required]
-        public string Content { get; set; }
+        public string Value { get; set; }
 
         public virtual Lyrics Lyrics { get; set; }
 
         public LyricsSentence(int sequence,
             TimeSpan startTime, TimeSpan endTime,
-            string content)
+            string value)
         {
             Id = Guid.NewGuid();
             Sequence = sequence;
             StartTime = startTime;
             EndTime = endTime;
             Duration = EndTime - StartTime;
-            Content = content;
+            Value = value;
         }
     }
 }
