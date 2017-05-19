@@ -17,7 +17,7 @@ namespace RawSharer.Models.Music
         [Required]
         public string Value { get; set; }
 
-        public virtual Music.Lyrics Lyrics { get; set; }
+        public virtual Lyrics Lyrics { get; set; }
 
         public LyricsSentence(int sequence,
             TimeSpan startTime, TimeSpan endTime,

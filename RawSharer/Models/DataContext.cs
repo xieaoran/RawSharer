@@ -54,7 +54,7 @@ namespace RawSharer.Models
             modelBuilder.Entity<TrackVersion>()
                 .HasOptional(version => version.ConvertedStorage);
 
-            modelBuilder.Entity<Music.Lyrics>()
+            modelBuilder.Entity<Lyrics>()
                 .HasMany(lyrics => lyrics.Sentences)
                 .WithOptional(lyricsSentence => lyricsSentence.Lyrics);
 
@@ -65,7 +65,7 @@ namespace RawSharer.Models
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<TrackVersion> TrackVersions { get; set; }
-        public virtual DbSet<Music.Lyrics> Lyrics { get; set; }
+        public virtual DbSet<Lyrics> Lyrics { get; set; }
         public virtual DbSet<LyricsSentence> LyricsSentences { get; set; }
         public virtual DbSet<LocalBlob> LocalBlobs { get; set; }
     }
