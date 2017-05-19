@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using RawSharer.Models.BaseClasses;
-using RawSharer.Models.Music;
 using RawSharer.Models.Storage;
 
-namespace RawSharer.Models.Lyrics
+namespace RawSharer.Models.Music
 {
     public class Lyrics : Entity
     {

@@ -13,7 +13,7 @@ namespace RawSharer.Models.Music
         public virtual Track Track { get; set; }
         public virtual LocalBlob OriginalStorage { get; set; }
         public virtual LocalBlob ConvertedStorage { get; set; }
-        public virtual Lyrics.Lyrics Lyrics { get; set; }
+        public virtual Lyrics Lyrics { get; set; }
 
         public TrackVersion(string name)
         {

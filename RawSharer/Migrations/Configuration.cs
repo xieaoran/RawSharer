@@ -4,7 +4,6 @@ using System.IO;
 using RawSharer.Configs;
 using RawSharer.Models;
 using RawSharer.Models.BaseClasses;
-using RawSharer.Models.Lyrics;
 using RawSharer.Models.Music;
 using RawSharer.Models.Storage;
 

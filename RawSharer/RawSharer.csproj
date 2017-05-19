@@ -158,8 +158,8 @@
     <Compile Include="Models\Music\Artist.cs" />
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\Music\Genre.cs" />
-    <Compile Include="Models\Lyrics\Lyrics.cs" />
-    <Compile Include="Models\Lyrics\LyricsSentence.cs" />
+    <Compile Include="Models\Music\Lyrics.cs" />
+    <Compile Include="Models\Music\LyricsSentence.cs" />
     <Compile Include="Models\Music\TrackVersion.cs" />
     <Compile Include="Models\Storage\LocalBlob.cs" />
     <Compile Include="Models\Music\Track.cs" />
