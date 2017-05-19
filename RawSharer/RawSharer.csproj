@@ -155,12 +155,14 @@
     </Compile>
     <Compile Include="Helpers\Md5Helper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\BaseClasses\Entity.cs" />
     <Compile Include="Models\Music\Album.cs" />
     <Compile Include="Models\Music\Artist.cs" />
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\Music\Genre.cs" />
     <Compile Include="Models\Music\Lyrics.cs" />
-    <Compile Include="Models\Music\Version.cs" />
+    <Compile Include="Models\Music\LyricsSentence.cs" />
+    <Compile Include="Models\Music\TrackVersion.cs" />
     <Compile Include="Models\Storage\LocalBlob.cs" />
     <Compile Include="Models\Music\Track.cs" />
     <Compile Include="Models\BaseClasses\StorageBase.cs" />

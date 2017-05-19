@@ -1,14 +1,16 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using RawSharer.Configs;
+using RawSharer.Models;
 using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Music;
 using RawSharer.Models.Storage;
 
 namespace RawSharer.Migrations
 {
-    using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<RawSharer.Models.DataContext>
     {
@@ -17,25 +19,81 @@ namespace RawSharer.Migrations
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(RawSharer.Models.DataContext context)
+        protected override void Seed(DataContext context)
         {
-            //var animationGenre = new Genre("Animation");
-            //context.Genres.AddOrUpdate(genre => genre.Name,
-            //    animationGenre);
-            //var demoArtist = new Artist("RADWIMPS");
-            //context.Artists.AddOrUpdate(artist => artist.Name, demoArtist);
-            //var demoAlbumImage = new LocalBlob(StorageType.Image, "cover.jpg", 928441);
-            //context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoAlbumImage);
-            //var demoAlbum = new Album("¾ý¤ÎÃû¤Ï¡£",
-            //    new List<Artist> { demoArtist }, animationGenre, "2016", 1, 27, demoAlbumImage);
-            //context.Albums.AddOrUpdate(album => album.Name, demoAlbum);
-            //var demoTrackFile = new LocalBlob(StorageType.Audio, "Demo.wav", 71131500);
-            //context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoTrackFile);
-            //var demoLyrics = new LocalBlob(StorageType.Lyrics, "Demo.lrc", 233);
-            //context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoLyrics);
-            //var demoTrack = new Track(demoTrackFile, demoTrackFile, "¥Ç©`¥È", new List<Album> { demoAlbum },
-            //    new List<Artist> { demoArtist }, 1, 10, TimeSpan.FromSeconds(243.755), demoLyrics);
-            //context.Tracks.AddOrUpdate(track => track.Name, demoTrack);
+            CreateTriggers(context);
+            FillDemoData(context);
+        }
+        private static void CreateTriggers(DataContext context)
+        {
+            foreach (var propertyInfo in context.GetType().GetProperties())
+            {
+                if (!propertyInfo.PropertyType.IsGenericType ||
+                    propertyInfo.PropertyType.GetGenericTypeDefinition() != typeof(DbSet<>)) continue;
+                var triggerName = $"Trigger_{propertyInfo.Name}";
+                var tableName = propertyInfo.Name;
+                context.Database.ExecuteSqlCommand(
+                    $"IF (OBJECT_ID('{triggerName}', 'TR') IS NOT NULL) " +
+                    $"DROP TRIGGER [{triggerName}]");
+                context.Database.ExecuteSqlCommand(
+                    $"CREATE TRIGGER [{triggerName}] " +
+                    $"ON [{tableName}] AFTER INSERT, UPDATE AS " +
+                    $"BEGIN UPDATE [{tableName}] SET TimeStamp = GETDATE() END");
+            }
+        }
+
+        private static void FillDemoData(DataContext context)
+        {
+            RuntimeConfig.RegisterConfigs();
+
+            var demoAlbumImage = new LocalBlob(StorageType.Image, "cover.jpg");
+            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoAlbumImage);
+            using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\folder.jpg"))
+            {
+                demoAlbumImage.HandleUpload(uploadStream);
+            }
+
+            var demoLyricsStorage = new LocalBlob(StorageType.Lyrics, "Demo.lrc");
+            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoLyricsStorage);
+            using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\A-Z.lrc"))
+            {
+                demoLyricsStorage.HandleUpload(uploadStream);
+            }
+
+            var demoTrackVersionStorage = new LocalBlob(StorageType.Audio, "Demo.wav");
+            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoTrackVersionStorage);
+            using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\A-Z.wav"))
+            {
+                demoTrackVersionStorage.HandleUpload(uploadStream);
+            }
+
+            var animationGenre = new Genre("Animation");
+            context.Genres.AddOrUpdate(genre => genre.Name, animationGenre);
+
+            var demoArtist = new Artist("SawanoHiroyuki[nZk]");
+            context.Artists.AddOrUpdate(artist => artist.Name, demoArtist);
+
+            var demoAlbum = new Album("A/Z|aLIEz", "2014", 1, 8);
+            demoAlbum.Artists.Add(demoArtist);
+            demoAlbum.Genre = animationGenre;
+            demoAlbum.Image = demoAlbumImage;
+            context.Albums.AddOrUpdate(album => album.Name, demoAlbum);
+
+            var demoLyrics = new Lyrics(demoLyricsStorage);
+            context.Lyrics.AddOrUpdate(lyrics => lyrics.RawContent, demoLyrics);
+
+            var demoTrackVersion = new TrackVersion("RawSharer Demo")
+            {
+                OriginalStorage = demoTrackVersionStorage,
+                ConvertedStorage = demoTrackVersionStorage,
+                Lyrics = demoLyrics
+            };
+            context.TrackVersions.AddOrUpdate(trackVersion => trackVersion.Name, demoTrackVersion);
+
+            var demoTrack = new Track("A/Z", 1, 2, TimeSpan.FromSeconds(317.949)) { Album = demoAlbum };
+            demoTrack.Artists.Add(demoArtist);
+            demoTrack.Versions.Add(demoTrackVersion);
+            context.Tracks.AddOrUpdate(track => track.Name, demoTrack);
         }
     }
 }

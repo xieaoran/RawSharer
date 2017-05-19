@@ -15,7 +15,7 @@ namespace RawSharer.Controllers
         {
             using (var dataContext = new DataContext())
             {
-                var blob = dataContext.LocalBlobsQuery.FirstOrDefault(b => b.Id == id);
+                var blob = dataContext.LocalBlobs.Find(id);
                 if (blob == null) return HttpNotFound();
                 return new ResumingFileStreamResult(blob.GetReadStream(), blob.ContentType);
             }

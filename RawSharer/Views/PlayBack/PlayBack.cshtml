@@ -1,8 +1,8 @@
 ﻿@model RawSharer.ViewModels.PlayBackViewModel
 <div class="playback row">
     <div class="col-md-5 album-cover">
-        <img id="cover-img" alt="@Model.SenderAlbum.Name"
-             src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.SenderAlbum.Image.Id} })" />
+        <img id="cover-img" alt="@Model.TrackVersion.Track.Album.Name"
+             src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.TrackVersion.Track.Album.Image.Id} })" />
         <div class="cover-circle">
             <i id="player-icon" class="fa" onclick="PlayBack.Player.SwitchState();"></i>
         </div>
@@ -10,24 +10,24 @@
     <div class="col-md-7 song-details">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="win-h1" id="song-title">@Model.Track.Name</h1>
+                <h1 class="win-h1" id="song-title">@Model.TrackVersion.Track.Name</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <i class="fa fa-user"></i><h6 class="win-h6" id="song-artist">@Model.Track.GetArtists()</h6>
+                <i class="fa fa-user"></i><h6 class="win-h6" id="song-artist">@Model.TrackVersion.Track.GetArtists()</h6>
                 <h6 class="win-h6 separator">|</h6>
-                <i class="fa fa-dot-circle-o"></i><h6 class="win-h6" id="song-album">@Model.SenderAlbum.Name</h6>
+                <i class="fa fa-dot-circle-o"></i><h6 class="win-h6" id="song-album">@Model.TrackVersion.Track.Album.Name</h6>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <audio id="player" loop="loop" controls="controls" src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.Track.ConvertedStorage.Id } })"></audio>
+                <audio id="player" loop="loop" controls="controls" src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.TrackVersion.ConvertedStorage.Id } })"></audio>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12 lyricBorder">
-                <div id="lyricContainer" style="top: 148px" data-lyrics="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.Track.Lyrics.Id } })"></div>
+                <div id="lyricContainer" style="top: 148px" data-lyrics="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.TrackVersion.Lyrics.Id } })"></div>
             </div>
         </div>
     </div>

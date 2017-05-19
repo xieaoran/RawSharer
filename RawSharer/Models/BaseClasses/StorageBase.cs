@@ -13,25 +13,18 @@ namespace RawSharer.Models.BaseClasses
         Lyrics,
         Other
     }
-    public abstract class StorageBase
+    public abstract class StorageBase : Entity
     {
-        [Key]
-        public Guid Id { get; protected set; }
+        [Required]
         public StorageType StorageType { get; protected set; }
+        [Required, MaxLength(64)]
         public string ContentType { get; protected set; }
+        [MaxLength(32)]
         public string Md5Hash { get; protected set; }
         public long Length { get; protected set; }
 
         public abstract Stream GetReadStream();
         public abstract Stream GetWriteStream();
-        public string GetMd5Hash()
-        {
-            string md5;
-            using (var readStream = GetReadStream())
-            {
-                md5 = Md5Helper.GetMd5HashFromStream(readStream);
-            }
-            return md5;
-        }
+        public abstract void HandleUpload(Stream uploadStream);
     }
 }

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using RawSharer.Configs;
+using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Storage;
 
 namespace RawSharer.Models.Music
 {
-    public class Album
+    public class Album: Entity
     {
-        [Key]
-        public Guid Id { get; }
-        [Required]
+        [Required, MaxLength(128)]
         public string Name { get; set; }
+        [MaxLength(16)]
         public string ReleaseDate { get; set; }
         public byte? DiskCount { get; set; }
         public byte? TrackCount { get; set; }
@@ -31,6 +31,9 @@ namespace RawSharer.Models.Music
             ReleaseDate = releaseDate;
             DiskCount = diskCount;
             TrackCount = trackCount;
+
+            Artists = new List<Artist>();
+            Tracks = new List<Track>();
         }
 
         public string GetArtists()

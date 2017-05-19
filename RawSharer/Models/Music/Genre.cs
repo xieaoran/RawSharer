@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using RawSharer.Models.BaseClasses;
 
 namespace RawSharer.Models.Music
 {
-    public class Genre
+    public class Genre : Entity
     {
-        [Key]
-        public Guid Id { get; }
-        [Required]
+        [Required, MaxLength(128)]
         public string Name { get; set; }
 
         public virtual ICollection<Album> Albums { get; set; }
@@ -17,6 +16,8 @@ namespace RawSharer.Models.Music
         {
             Id = Guid.NewGuid();
             Name = name;
+
+            Albums = new List<Album>();
         }
 
         public Genre()

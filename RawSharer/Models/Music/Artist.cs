@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Storage;
 
 namespace RawSharer.Models.Music
 {
-    public class Artist
+    public class Artist : Entity
     {
-        [Key]
-        public Guid Id { get; }
-        [Required]
+        [Required, MaxLength(128)]
         public string Name { get; set; }
+        [MaxLength(1024)]
         public string Biography { get; set; }
 
         public virtual LocalBlob Image { get; set; }
@@ -22,6 +22,9 @@ namespace RawSharer.Models.Music
             Id = Guid.NewGuid();
             Name = name;
             Biography = biography;
+            
+            Albums = new List<Album>();
+            Tracks = new List<Track>();
         }
 
         public Artist()

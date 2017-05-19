@@ -20,7 +20,7 @@ namespace RawSharer
             routes.MapRoute(
                 name: "PlayBack",
                 url: "Pages/PlayBack/{action}/{id}",
-                defaults: new { controller = "PlayBack", action = "Track" }
+                defaults: new { controller = "PlayBack", action = "TrackVersion" }
             );
             routes.MapRoute(
                 name: "Upload",

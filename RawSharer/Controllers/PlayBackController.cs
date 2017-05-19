@@ -10,13 +10,23 @@ namespace RawSharer.Controllers
 {
     public class PlayBackController : Controller
     {
-        public ActionResult Track(Guid id)
+        public ActionResult TrackVersion(Guid id)
         {
             using (var dataContext = new DataContext())
             {
-                var track = dataContext.TracksQuery.FirstOrDefault(t => t.Id == id);
-                if (track == null) return HttpNotFound();
-                return View("PlayBack", new PlayBackViewModel(track));
+                var trackVersion = dataContext.TrackVersions
+                    .Include("OriginalStorage")
+                    .Include("ConvertedStorage")
+                    .Include("Lyrics")
+                    .Include("Lyrics.Sentences")
+                    .Include("Track")
+                    .Include("Track.Artists")
+                    .Include("Track.Album")
+                    .Include("Track.Album.Genre")
+                    .Include("Track.Album.Image")
+                    .FirstOrDefault(t => t.Id == id);
+                if (trackVersion == null) return HttpNotFound();
+                return View("PlayBack", new PlayBackViewModel(trackVersion));
             }
         }
     }
