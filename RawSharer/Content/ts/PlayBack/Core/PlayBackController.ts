@@ -70,7 +70,10 @@
         }
 
         private playerTimeUpdateHandler = (currentTime: number) => {
-            for (let index = 0; index < this.sentenceTimes.length; index++) {
+            if (currentTime < this.sentenceTimes[0]) this.currentSentenceIndex = 0;
+            else if (currentTime > this.sentenceTimes[this.sentenceTimes.length - 1])
+                this.currentSentenceIndex = this.sentenceTimes.length - 1;
+            else for (let index = 1; index < this.sentenceTimes.length; index++) {
                 if (currentTime < this.sentenceTimes[index]) {
                     this.currentSentenceIndex = index - 1;
                     break;
