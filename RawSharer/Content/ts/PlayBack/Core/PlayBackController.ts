@@ -49,16 +49,20 @@
         }
 
         private getSentenceIndex(currentTime: number): number {
-            for (let index = this.currentSentenceIndex; index < this.sentenceTimes.length; index++) {
-                if (currentTime < this.sentenceTimes[index]) return index - 1;
-            }
-            if (currentTime < this.sentenceTimes[0]) return 0;
-            else if (currentTime > this.sentenceTimes[this.sentenceTimes.length - 1])
+            if (currentTime === this.sentenceTimes[this.currentSentenceIndex])
+                return this.currentSentenceIndex;
+            else if (currentTime > this.sentenceTimes[this.currentSentenceIndex]) {
+                for (let index = this.currentSentenceIndex + 1; index < this.sentenceTimes.length; index++) {
+                    if (currentTime < this.sentenceTimes[index]) return index - 1;
+                }
                 return this.sentenceTimes.length - 1;
-            else for (let index = 0; index < this.currentSentenceIndex; index++) {
-                if (currentTime < this.sentenceTimes[index]) return index - 1;
             }
-            return -1;
+            else if (currentTime < this.sentenceTimes[this.currentSentenceIndex]) {
+                for (let index = this.currentSentenceIndex - 1; index >= 0; index--) {
+                    if (currentTime > this.sentenceTimes[index]) return index;
+                }
+                return 0;
+            }
         }
 
         private playerPlayingHandler = () => {
