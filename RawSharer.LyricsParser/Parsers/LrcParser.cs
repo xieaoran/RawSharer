@@ -203,13 +203,13 @@ namespace RawSharer.LyricsParser.Parsers
             {
                 if (flag == 0 && nextChar == ':')
                 {
-                    if (!int.TryParse(timeBuilder.ToString(), out minute)) goto IgnoreLine;
+                    if (!int.TryParse(timeBuilder.ToString(), out minute)) goto IgnoreTime;
                     timeBuilder.Clear();
                     flag++;
                 }
                 else if (flag == 1 && (nextChar == '.' || nextChar == ':'))
                 {
-                    if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreLine;
+                    if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreTime;
                     timeBuilder.Clear();
                     flag++;
                 }
@@ -217,13 +217,13 @@ namespace RawSharer.LyricsParser.Parsers
             }
             if (flag == 1)
             {
-                if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreLine;
+                if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreTime;
                 timeBuilder.Clear();
                 return new TimeSpan(0, minute, second);
             }
             else if (flag == 2)
             {
-                if (!int.TryParse(timeBuilder.ToString(), out int millisecond)) goto IgnoreLine;
+                if (!int.TryParse(timeBuilder.ToString(), out int millisecond)) goto IgnoreTime;
                 for (var i = timeBuilder.Length; i < 3; i++)
                 {
                     millisecond *= 10;
@@ -232,7 +232,7 @@ namespace RawSharer.LyricsParser.Parsers
                 return new TimeSpan(0, 0, minute, second, millisecond);
             }
 
-            IgnoreLine:
+            IgnoreTime:
             return null;
         }
     }
