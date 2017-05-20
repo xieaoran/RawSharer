@@ -36,12 +36,9 @@ namespace RawSharer.Models.Music
         public IEnumerable<LyricsSentence> Parse()
         {
             var readStream = LyricsStorage.GetReadStream();
-            var reader = new StreamReader(readStream);
-            var rawContent = reader.ReadToEnd();
-            reader.Close();
+            var parsedLyrics = LrcParser.Parse(readStream);
             readStream.Close();
 
-            var parsedLyrics = LrcParser.Parse(rawContent);
             Album = parsedLyrics.Album;
             Artist = parsedLyrics.Artist;
             Title = parsedLyrics.Title;
