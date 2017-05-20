@@ -2,18 +2,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("RawSharer.Lyrics.Tests")]
+[assembly: AssemblyTitle("RawSharer.LyricsParser.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RawSharer.Lyrics.Tests")]
+[assembly: AssemblyProduct("RawSharer.LyricsParser.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("af7d2af2-e5dd-4f2f-84a6-8ba65b208a58")]
+[assembly: Guid("53a72dd9-6c07-4d95-b7ab-b5a304ca8fc6")]
 
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]

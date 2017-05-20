@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using RawSharer.Lyrics.Models;
+using RawSharer.LyricsParser.Models;
 
-namespace RawSharer.Lyrics.Utils
+namespace RawSharer.LyricsParser.Utils
 {
-    internal class LyricsSentenceComparer : IComparer<LyricsSentence>
+    internal class LyricsSentenceComparer : IComparer<ParsedSentence>
     {
-        public int Compare(LyricsSentence x, LyricsSentence y)
+        public int Compare(ParsedSentence x, ParsedSentence y)
         {
             if (x == null && y == null) return 0;
             if (x == null) return -1;

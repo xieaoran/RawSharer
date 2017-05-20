@@ -1,4 +1,4 @@
-﻿namespace RawSharer.Lyrics.Utils
+﻿namespace RawSharer.LyricsParser.Utils
 {
     internal enum MetaType
     {

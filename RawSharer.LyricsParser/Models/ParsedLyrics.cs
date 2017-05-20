@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace RawSharer.Lyrics.Models
+namespace RawSharer.LyricsParser.Models
 {
-    public class Lyrics
+    public class ParsedLyrics
     {
         /// <summary>
         /// [al:Album where the song is from]
@@ -37,11 +37,11 @@ namespace RawSharer.Lyrics.Models
         /// <summary>
         /// Sentences of Lyrics
         /// </summary>
-        public List<LyricsSentence> Sentences { get; internal set; }
+        public List<ParsedSentence> Sentences { get; internal set; }
 
-        public Lyrics()
+        public ParsedLyrics()
         {
-            Sentences = new List<LyricsSentence>();
+            Sentences = new List<ParsedSentence>();
         }
     }
 }

@@ -42,45 +42,49 @@ namespace RawSharer.Migrations
             }
         }
 
-        private static void FillDemoData(DataContext context)
+        public static void FillDemoData(DataContext context)
         {
             RuntimeConfig.RegisterConfigs();
 
             var demoAlbumImage = new LocalBlob(StorageType.Image, "cover.jpg");
-            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoAlbumImage);
+            context.LocalBlobs.Add(demoAlbumImage);
             using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\folder.jpg"))
             {
                 demoAlbumImage.HandleUpload(uploadStream);
             }
 
             var demoLyricsStorage = new LocalBlob(StorageType.Lyrics, "Demo.lrc");
-            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoLyricsStorage);
+            context.LocalBlobs.Add(demoLyricsStorage);
             using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\A-Z.lrc"))
             {
                 demoLyricsStorage.HandleUpload(uploadStream);
             }
 
             var demoTrackVersionStorage = new LocalBlob(StorageType.Audio, "Demo.wav");
-            context.LocalBlobs.AddOrUpdate(blob => blob.FileName, demoTrackVersionStorage);
+            context.LocalBlobs.Add(demoTrackVersionStorage);
             using (var uploadStream = File.OpenRead(@"C:\Users\xieaoran\Downloads\A-Z.wav"))
             {
                 demoTrackVersionStorage.HandleUpload(uploadStream);
             }
 
             var animationGenre = new Genre("Animation");
-            context.Genres.AddOrUpdate(genre => genre.Name, animationGenre);
+            context.Genres.Add(animationGenre);
 
             var demoArtist = new Artist("SawanoHiroyuki[nZk]");
-            context.Artists.AddOrUpdate(artist => artist.Name, demoArtist);
+            context.Artists.Add(demoArtist);
 
             var demoAlbum = new Album("A/Z|aLIEz", "2014", 1, 8);
             demoAlbum.Artists.Add(demoArtist);
             demoAlbum.Genre = animationGenre;
             demoAlbum.Image = demoAlbumImage;
-            context.Albums.AddOrUpdate(album => album.Name, demoAlbum);
+            context.Albums.Add(demoAlbum);
 
             var demoLyrics = new Lyrics(demoLyricsStorage);
-            context.Lyrics.AddOrUpdate(lyrics => lyrics.RawContent, demoLyrics);
+            foreach (var sentence in demoLyrics.Parse())
+            {
+                context.LyricsSentences.Add(sentence);
+            }
+            context.Lyrics.Add(demoLyrics);
 
             var demoTrackVersion = new TrackVersion("RawSharer Demo")
             {
@@ -88,12 +92,12 @@ namespace RawSharer.Migrations
                 ConvertedStorage = demoTrackVersionStorage,
                 Lyrics = demoLyrics
             };
-            context.TrackVersions.AddOrUpdate(trackVersion => trackVersion.Name, demoTrackVersion);
+            context.TrackVersions.Add(demoTrackVersion);
 
             var demoTrack = new Track("A/Z", 1, 2, TimeSpan.FromSeconds(317.949)) { Album = demoAlbum };
             demoTrack.Artists.Add(demoArtist);
             demoTrack.Versions.Add(demoTrackVersion);
-            context.Tracks.AddOrUpdate(track => track.Name, demoTrack);
+            context.Tracks.Add(demoTrack);
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AF7D2AF2-E5DD-4F2F-84A6-8BA65B208A58}</ProjectGuid>
+    <ProjectGuid>{53A72DD9-6C07-4D95-B7AB-B5A304CA8FC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RawSharer.Lyrics.Tests</RootNamespace>
-    <AssemblyName>RawSharer.Lyrics.Tests</AssemblyName>
+    <RootNamespace>RawSharer.LyricsParser.Tests</RootNamespace>
+    <AssemblyName>RawSharer.LyricsParser.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,9 +55,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RawSharer.Lyrics\RawSharer.Lyrics.csproj">
-      <Project>{0cb2b9bb-b5d5-4646-9635-308b5460f926}</Project>
-      <Name>RawSharer.Lyrics</Name>
+    <ProjectReference Include="..\RawSharer.LyricsParser\RawSharer.LyricsParser.csproj">
+      <Project>{8ce5f7df-18c1-471f-be2c-83ee7b2d9c4a}</Project>
+      <Name>RawSharer.LyricsParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

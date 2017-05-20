@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RawSharer.Lyrics.Models
+namespace RawSharer.LyricsParser.Models
 {
-    public class LyricsSentence
+    public class ParsedSentence
     {
         /// <summary>
         /// Sequence of Current Sentence, Starting from 0

@@ -3,35 +3,70 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using RawSharer.Lyrics.Models;
-using RawSharer.Lyrics.Utils;
+using RawSharer.LyricsParser.Models;
+using RawSharer.LyricsParser.Utils;
 
-namespace RawSharer.Lyrics.Parsers
+namespace RawSharer.LyricsParser.Parsers
 {
     public static class LrcParser
     {
         private static readonly char[] OffsetNexts = { 'f', 'f', 's', 'e', 't' };
+
         /// <summary>
-        /// Parse Lyrics from LRC-format Source Stream
+        /// Parse Lyrics from LRC-format Lyrics String
         /// </summary>
-        /// <param name="lrcStream">Source Stream</param>
+        /// <param name="lrcString">Lyrics String</param>
         /// <returns>Parsed Lyrics</returns>
-        public static Models.Lyrics Parse(Stream lrcStream)
+        public static ParsedLyrics Parse(string lrcString)
         {
-            var result = new Models.Lyrics();
-
-            var lrcReader = new StreamReader(lrcStream);
-            string line;
-            while ((line = lrcReader.ReadLine()) != null)
+            try
             {
-                ParseLine(result, line);
-            }
+                var result = new ParsedLyrics();
 
-            PostProcess(result);
-            return result;
+                var lrcReader = new StringReader(lrcString);
+                string line;
+                while ((line = lrcReader.ReadLine()) != null)
+                {
+                    ParseLine(result, line);
+                }
+
+                PostProcess(result);
+                return result;
+            }
+            catch (Exception exception)
+            {
+                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
+            }
         }
 
-        private static void PostProcess(Models.Lyrics lyrics)
+        /// <summary>
+        /// Parse Lyrics from LRC-format Lyrics Source Stream
+        /// </summary>
+        /// <param name="lrcStream">Lyrics Source Stream</param>
+        /// <returns>Parsed Lyrics</returns>
+        public static ParsedLyrics Parse(Stream lrcStream)
+        {
+            try
+            {
+                var result = new ParsedLyrics();
+
+                var lrcReader = new StreamReader(lrcStream);
+                string line;
+                while ((line = lrcReader.ReadLine()) != null)
+                {
+                    ParseLine(result, line);
+                }
+
+                PostProcess(result);
+                return result;
+            }
+            catch (Exception exception)
+            {
+                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
+            }
+        }
+
+        private static void PostProcess(ParsedLyrics lyrics)
         {
             lyrics.Sentences.Sort(new LyricsSentenceComparer());
 
@@ -40,7 +75,12 @@ namespace RawSharer.Lyrics.Parsers
 
             var previous = lyrics.Sentences[0];
             previous.Sequence = 0;
-            if (hasOffset) previous.StartTime = previous.StartTime.Add(offset);
+            if (hasOffset)
+            {
+                previous.StartTime = previous.StartTime.Add(offset);
+                if (previous.StartTime < TimeSpan.Zero)
+                    throw new ParseException(Resources.ExceptionMessages.InvalidOffset);
+            }
             for (var i = 1; i < lyrics.Sentences.Count; i++)
             {
                 var current = lyrics.Sentences[i];
@@ -53,7 +93,7 @@ namespace RawSharer.Lyrics.Parsers
             }
         }
 
-        private static void ParseLine(Models.Lyrics lyrics, string line)
+        private static void ParseLine(ParsedLyrics lyrics, string line)
         {
             var lineReader = new StringReader(line);
 
@@ -65,7 +105,7 @@ namespace RawSharer.Lyrics.Parsers
             lineReader.Close();
         }
 
-        private static void ParseSentence(Models.Lyrics lyrics, char firstChar, TextReader lineReader)
+        private static void ParseSentence(ParsedLyrics lyrics, char firstChar, TextReader lineReader)
         {
             var timeBuilder = new StringBuilder();
             timeBuilder.Append(firstChar);
@@ -76,13 +116,13 @@ namespace RawSharer.Lyrics.Parsers
             {
                 startTimes.Add(ParseTime(lineReader, timeBuilder));
             }
-            var value = nextChar == -1 ? string.Empty : (char) nextChar + lineReader.ReadToEnd().Trim();
+            var value = nextChar == -1 ? string.Empty : (char)nextChar + lineReader.ReadToEnd().Trim();
             foreach (var startTime in startTimes)
             {
-                lyrics.Sentences.Add(new LyricsSentence { StartTime = startTime, Value = value });
+                lyrics.Sentences.Add(new ParsedSentence { StartTime = startTime, Value = value });
             }
         }
-        private static void ParseMetaData(Models.Lyrics lyrics, char firstChar, TextReader lineReader)
+        private static void ParseMetaData(ParsedLyrics lyrics, char firstChar, TextReader lineReader)
         {
             MetaType metaType;
             if (firstChar == 'a')

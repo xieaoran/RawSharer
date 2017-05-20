@@ -14,21 +14,25 @@ namespace RawSharer.Models.Music
         public TimeSpan EndTime { get; set; }
         [Required]
         public TimeSpan Duration { get; set; }
-        [Required]
         public string Value { get; set; }
 
         public virtual Lyrics Lyrics { get; set; }
 
         public LyricsSentence(int sequence,
-            TimeSpan startTime, TimeSpan endTime,
+            TimeSpan startTime, TimeSpan endTime, TimeSpan duration,
             string value)
         {
             Id = Guid.NewGuid();
             Sequence = sequence;
             StartTime = startTime;
             EndTime = endTime;
-            Duration = EndTime - StartTime;
+            Duration = duration;
             Value = value;
+        }
+
+        public LyricsSentence()
+        {
+            // Reserved for Serialization
         }
     }
 }

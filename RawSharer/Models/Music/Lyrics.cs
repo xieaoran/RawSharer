@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
+using RawSharer.LyricsParser.Parsers;
 using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Storage;
 
@@ -9,8 +11,6 @@ namespace RawSharer.Models.Music
 {
     public class Lyrics : Entity
     {
-        [Required]
-        public string RawContent { get; set; }
         [Required]
         public int Length { get; set; }
 
@@ -30,16 +30,32 @@ namespace RawSharer.Models.Music
             Length = 0;
 
             LyricsStorage = lyricsStorage;
-            FetchRawContent();
+            Sentences = new List<LyricsSentence>();
         }
 
-        private void FetchRawContent()
+        public IEnumerable<LyricsSentence> Parse()
         {
             var readStream = LyricsStorage.GetReadStream();
             var reader = new StreamReader(readStream);
-            RawContent = reader.ReadToEnd();
+            var rawContent = reader.ReadToEnd();
             reader.Close();
             readStream.Close();
+
+            var parsedLyrics = LrcParser.Parse(rawContent);
+            Album = parsedLyrics.Album;
+            Artist = parsedLyrics.Artist;
+            Title = parsedLyrics.Title;
+            Author = parsedLyrics.Author;
+            LrcCreator = parsedLyrics.LrcCreator;
+            Length = parsedLyrics.Sentences.Count;
+
+            var sentences = parsedLyrics.Sentences.Select(
+                s => new LyricsSentence(s.Sequence, s.StartTime, s.EndTime, s.Duration, s.Value)).ToArray();
+            foreach (var sentence in sentences)
+            {
+                Sentences.Add(sentence);
+            }
+            return sentences;
         }
 
         public Lyrics()

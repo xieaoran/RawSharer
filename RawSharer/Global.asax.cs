@@ -2,6 +2,7 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 using RawSharer.Configs;
+using RawSharer.Models;
 
 namespace RawSharer
 {
