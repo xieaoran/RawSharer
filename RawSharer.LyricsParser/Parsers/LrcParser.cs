@@ -23,12 +23,9 @@ namespace RawSharer.LyricsParser.Parsers
             {
                 var result = new ParsedLyrics();
 
-                var lrcReader = new StringReader(lrcString);
-                string line;
-                while ((line = lrcReader.ReadLine()) != null)
-                {
-                    ParseLine(result, line);
-                }
+                var reader = new StringReader(lrcString);
+                while (ParseLine(result, reader)) { }
+                reader.Close();
 
                 PostProcess(result);
                 return result;
@@ -46,24 +43,14 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(Stream lrcStream)
         {
-            try
-            {
-                var result = new ParsedLyrics();
+            var result = new ParsedLyrics();
 
-                var lrcReader = new StreamReader(lrcStream);
-                string line;
-                while ((line = lrcReader.ReadLine()) != null)
-                {
-                    ParseLine(result, line);
-                }
+            var reader = new StreamReader(lrcStream);
+            while (ParseLine(result, reader)) { }
+            reader.Close();
 
-                PostProcess(result);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
-            }
+            PostProcess(result);
+            return result;
         }
 
         private static void PostProcess(ParsedLyrics lyrics)
@@ -93,41 +80,45 @@ namespace RawSharer.LyricsParser.Parsers
             }
         }
 
-        private static void ParseLine(ParsedLyrics lyrics, string line)
+        private static bool ParseLine(ParsedLyrics lyrics, TextReader reader)
         {
-            var lineReader = new StringReader(line);
-
-            if (lineReader.Read() != '[') return;
-            var firstChar = (char)lineReader.Read();
-            if (char.IsDigit(firstChar)) ParseSentence(lyrics, firstChar, lineReader);
-            else ParseMetaData(lyrics, firstChar, lineReader);
-
-            lineReader.Close();
+            var leftBracket = reader.Read();
+            if (leftBracket == -1) return false;
+            if (leftBracket != '[')
+            {
+                reader.ReadLine();
+                return true;
+            }
+            var firstChar = (char)reader.Read();
+            if (char.IsDigit(firstChar)) ParseSentence(lyrics, firstChar, reader);
+            else ParseMetaData(lyrics, firstChar, reader);
+            return true;
         }
 
-        private static void ParseSentence(ParsedLyrics lyrics, char firstChar, TextReader lineReader)
+        private static void ParseSentence(ParsedLyrics lyrics, char firstChar, TextReader reader)
         {
             var timeBuilder = new StringBuilder();
             timeBuilder.Append(firstChar);
 
-            var startTimes = new List<TimeSpan> { ParseTime(lineReader, timeBuilder) };
+            var startTimes = new List<TimeSpan> { ParseTime(reader, timeBuilder) };
             int nextChar;
-            while ((nextChar = lineReader.Read()) == '[')
+            while ((nextChar = reader.Read()) == '[')
             {
-                startTimes.Add(ParseTime(lineReader, timeBuilder));
+                startTimes.Add(ParseTime(reader, timeBuilder));
             }
-            var value = nextChar == -1 ? string.Empty : (char)nextChar + lineReader.ReadToEnd().Trim();
+            var value = nextChar == '\n' || nextChar == -1 ? 
+                string.Empty : (char) nextChar + reader.ReadLine()?.Trim();
             foreach (var startTime in startTimes)
             {
                 lyrics.Sentences.Add(new ParsedSentence { StartTime = startTime, Value = value });
             }
         }
-        private static void ParseMetaData(ParsedLyrics lyrics, char firstChar, TextReader lineReader)
+        private static void ParseMetaData(ParsedLyrics lyrics, char firstChar, TextReader reader)
         {
             MetaType metaType;
             if (firstChar == 'a')
             {
-                var secondChar = lineReader.Read();
+                var secondChar = reader.Read();
                 if (secondChar == 'l') metaType = MetaType.Album;
                 else if (secondChar == 'r') metaType = MetaType.Artist;
                 else if (secondChar == 'u') metaType = MetaType.Author;
@@ -135,29 +126,32 @@ namespace RawSharer.LyricsParser.Parsers
             }
             else if (firstChar == 'b')
             {
-                var secondChar = lineReader.Read();
+                var secondChar = reader.Read();
                 if (secondChar == 'y') metaType = MetaType.LrcCreator;
                 else return;
             }
             else if (firstChar == 'o')
             {
                 var nextFiveChars = new char[5];
-                lineReader.Read(nextFiveChars, 0, 5);
+                reader.Read(nextFiveChars, 0, 5);
                 if (nextFiveChars.SequenceEqual(OffsetNexts)) metaType = MetaType.Offset;
                 else return;
             }
             else if (firstChar == 't')
             {
-                var secondChar = lineReader.Read();
+                var secondChar = reader.Read();
                 if (secondChar == 'i') metaType = MetaType.Title;
                 else return;
             }
             else return;
 
-            var nextChar = lineReader.Read();
+            var nextChar = reader.Read();
             if (nextChar != ':') return;
 
-            var value = lineReader.ReadToEnd().Trim();
+            var line = reader.ReadLine();
+            if (line == null) return;
+
+            var value = line.Trim();
             if (value[value.Length - 1] == ']') value = value.Substring(0, value.Length - 1);
 
             if (metaType == MetaType.Album) lyrics.Album = value;
@@ -168,12 +162,12 @@ namespace RawSharer.LyricsParser.Parsers
             else if (metaType == MetaType.Title) lyrics.Title = value;
         }
 
-        private static TimeSpan ParseTime(TextReader lineReader, StringBuilder timeBuilder)
+        private static TimeSpan ParseTime(TextReader reader, StringBuilder timeBuilder)
         {
             var flag = 0;
             int minute = 0, second = 0;
             char nextChar;
-            while ((nextChar = (char)lineReader.Read()) != ']')
+            while ((nextChar = (char)reader.Read()) != ']')
             {
                 if (flag == 0 && nextChar == ':')
                 {
