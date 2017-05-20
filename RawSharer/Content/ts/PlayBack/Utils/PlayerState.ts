@@ -1,4 +1,4 @@
-﻿namespace RawSharer.Enums {
+﻿namespace RawSharer.PlayBack.Utils {
     export enum PlayerState {
         Playing,
         Stopped,

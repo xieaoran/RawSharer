@@ -1,5 +1,5 @@
 ﻿namespace RawSharer.PlayBack.UI.Controls.Playing {
-    import PlayerState = Enums.PlayerState;
+    import PlayerState = PlayBack.Utils.PlayerState;
 
     export class StateIndicator {
         private playerIconFront: JQuery;
@@ -12,7 +12,7 @@
             this.coverImgFront = $(`#${coverImgId}`);
         }
 
-        public playing(): void {
+        public toPlaying(): void {
             this.coverImgFront.removeClass("animation-paused");
             this.coverImgFront.addClass("animation-running");
             this.playerIconFront.removeClass("fa-stop fa-pause animation-running state-switching state-switched");
@@ -22,9 +22,9 @@
             }, 400);
         }
 
-        public paused(ended: boolean): void {
+        public toPaused(ended: boolean): void {
             this.playerIconFront.removeClass("fa-play animation-running state-switching");
-            if (ended) this.stopped();
+            if (ended) this.toStopped();
             else {
                 this.playerIconFront.addClass("fa-pause animation-running state-switching");
                 this.coverImgFront.removeClass("animation-running");
@@ -36,7 +36,7 @@
             }
         }
 
-        public stopped(): void {
+        public toStopped(): void {
             this.playerIconFront.addClass("fa-stop animation-running state-switching");
             this.coverImgFront.removeClass("animation-running");
             this.coverImgFront.addClass("animation-paused");
@@ -45,7 +45,7 @@
             }, 400);
         }
 
-        public seeking(currentState: PlayerState): void {
+        public toSeeking(currentState: PlayerState): void {
             if (this.pauseTimeOut) clearTimeout(this.pauseTimeOut);
             if (currentState === PlayerState.Playing) {
                 this.playerIconFront.removeClass("fa-pause animation-running state-switching state-switched");
@@ -57,6 +57,10 @@
                 this.playerIconFront.removeClass("fa-stop animation-running state-switching");
                 this.playerIconFront.addClass("fa-pause animation-running state-switched");
             }
+        }
+
+        public attachClick(click: () => void) {
+            this.playerIconFront.click(click);
         }
     }
 }

@@ -4,7 +4,7 @@
         <img id="cover-img" alt="@Model.TrackVersion.Track.Album.Name"
              src="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.TrackVersion.Track.Album.Image.Id} })" />
         <div class="cover-circle">
-            <i id="player-icon" class="fa" onclick="PlayBack.Player.SwitchState();"></i>
+            <i id="player-icon" class="fa"></i>
         </div>
     </div>
     <div class="col-md-7 song-details">
@@ -26,8 +26,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 lyricBorder">
-                <div id="lyricContainer" style="top: 148px" data-lyrics="@Url.Action("Get", "Blobs", new RouteValueDictionary { { "id", Model.TrackVersion.Lyrics.Id } })"></div>
+            <div id="lyrics-border" class="col-md-12">
+                <div id="lyrics-container">
+                    @foreach (var sentence in Model.TrackVersion.Lyrics.Sentences.OrderBy(s => s.Sequence))
+                    {
+                        <p id="lyrics@(sentence.Sequence)" data-time="@(sentence.StartTime.TotalSeconds)">
+                            @if (string.IsNullOrWhiteSpace(sentence.Value)) { <br /> }
+                            else { @sentence.Value }
+                        </p>
+                    }
+                </div>
             </div>
         </div>
     </div>

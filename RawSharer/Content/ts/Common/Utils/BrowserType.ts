@@ -1,4 +1,4 @@
-﻿namespace RawSharer.Enums {
+﻿namespace RawSharer.Common.Utils {
     export enum BrowserType {
         MSIE,
         Firefox,

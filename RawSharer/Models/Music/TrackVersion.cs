@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Storage;
 
@@ -8,6 +9,7 @@ namespace RawSharer.Models.Music
     public class TrackVersion : Entity
     {
         [MaxLength(128)]
+        [Index(IsClustered = false, IsUnique = false)]
         public string Name { get; set; }
 
         public virtual Track Track { get; set; }

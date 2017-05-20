@@ -95,18 +95,13 @@
     width: 540px;
 }
 
-.playback .song-details .lyricBorder {
+.playback .song-details #lyrics-border {
     height: 327px;
-    width: 540px;
+    width: 100%;
     overflow: hidden;
 }
 
-.playback .song-details .lyricBorder #lyricContainer {
+.playback .song-details #lyrics-border #lyrics-container {
     position: relative;
-    word-break: normal;
     font-family: "Segoe UI", "Microsoft YaHei UI", sans-serif, "Segoe MDL2 Assets", "Symbols";
 }
-
-    .playback .song-details .lyricBorder #lyricContainer p {
-        height: 21px;
-    }

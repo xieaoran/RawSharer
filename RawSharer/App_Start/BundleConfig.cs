@@ -5,7 +5,6 @@ namespace RawSharer
 {
     public class BundleConfig
     {
-        // 有关绑定的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -22,19 +21,22 @@ namespace RawSharer
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/winjs").Include(
-                      "~/Content/frameworks/WinJS/js/base.min.js",
-                      "~/Content/frameworks/WinJS/js/ui.min.js",
-                      "~/Scripts/respond.js"));
+                      "~/WinJS/js/base.min.js",
+                      "~/WinJS/js/ui.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/fine-uploader").Include(
                     "~/Content/frameworks/fine-uploader/jquery.fine-uploader.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/rawsharer").Include(
-                "~/Content/js/*.js"));
+            bundles.Add(new ScriptBundle("~/bundles/rawsharer")
+                .IncludeDirectory("~/Content/ts/Common", "*.js", true)
+                .IncludeDirectory("~/Content/ts/PlayBack/Utils", "*.js")
+                .IncludeDirectory("~/Content/ts/PlayBack/UI", "*.js", true)
+                .IncludeDirectory("~/Content/ts/PlayBack/Core", "*.js")
+                .IncludeDirectory("~/Content/js", "*.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                      "~/Content/frameworks/WinJS/css/ui-dark.min.css",
+                      "~/WinJS/css/ui-dark.min.css",
                       "~/Content/frameworks/bootstrap/bootstrap.min.css",
                       "~/Content/frameworks/fine-uploader/fine-uploader-gallery.css",
                       "~/Content/css/*.css",

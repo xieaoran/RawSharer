@@ -194,7 +194,6 @@
     <Content Include="Content\frameworks\fine-uploader\templates\gallery.html" />
     <Content Include="Content\js\base.js" />
     <Content Include="Content\js\helpers.js" />
-    <Content Include="Content\js\playback.js" />
     <Content Include="Content\js\upload.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -238,24 +237,8 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Content\frameworks\bootstrap\bootstrap.min.css" />
-    <Content Include="Content\frameworks\WinJS\css\ui-dark.css" />
-    <Content Include="Content\frameworks\WinJS\css\ui-dark.min.css" />
-    <Content Include="Content\frameworks\WinJS\css\ui-light.css" />
-    <Content Include="Content\frameworks\WinJS\css\ui-light.min.css" />
-    <Content Include="Content\frameworks\WinJS\js\base.js" />
-    <Content Include="Content\frameworks\WinJS\js\base.min.js" />
-    <Content Include="Content\frameworks\WinJS\js\en-US\ui.strings.js" />
-    <Content Include="Content\frameworks\WinJS\js\ui.js" />
-    <Content Include="Content\frameworks\WinJS\js\ui.min.js" />
-    <Content Include="Content\frameworks\WinJS\js\ui.min.js.map" />
-    <Content Include="Content\frameworks\WinJS\js\base.min.js.map" />
-    <Content Include="Content\frameworks\WinJS\fonts\Symbols.ttf" />
     <Content Include="Views\Home\Base.cshtml" />
     <Content Include="Views\PlayBack\PlayBack.cshtml" />
-    <None Include="Content\frameworks\WinJS\js\WinJS.intellisense.js" />
-    <Content Include="Content\frameworks\WinJS\js\WinJS.intellisense-setup.js" />
-    <Content Include="Content\frameworks\WinJS\License.txt" />
-    <Content Include="Content\frameworks\WinJS\README.md" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Upload\Template.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
@@ -285,13 +268,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\ts\Common\Network\Downloader.ts" />
-    <TypeScriptCompile Include="Content\ts\Enums\BrowserType.ts" />
-    <TypeScriptCompile Include="Content\ts\Enums\PlayerState.ts" />
-    <TypeScriptCompile Include="Content\ts\Common\Helpers\Environment.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\Core\Lyrics\Parser.ts" />
+    <TypeScriptCompile Include="Content\ts\Common\Utils\BrowserType.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\Utils\PlayerState.ts" />
+    <TypeScriptCompile Include="Content\ts\Common\Utils\Environment.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\Core\PlayBackController.ts" />
     <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Playing\Player.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Page\PageAdapter.ts" />
-    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Lyrics\Container.ts" />
+    <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Lyrics\LyricsContainer.ts" />
     <TypeScriptCompile Include="Content\ts\PlayBack\UI\Controls\Playing\StateIndicator.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>

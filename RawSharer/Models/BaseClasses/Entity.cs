@@ -9,7 +9,9 @@ namespace RawSharer.Models.BaseClasses
 {
     public abstract class Entity
     {
-        [Key, Required, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; protected set; }
 
         public DateTime? TimeStamp { get; protected set; }

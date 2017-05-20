@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RawSharer.Models.BaseClasses;
 using RawSharer.Models.Storage;
 
@@ -8,7 +9,9 @@ namespace RawSharer.Models.Music
 {
     public class Artist : Entity
     {
-        [Required, MaxLength(128)]
+        [Required]
+        [MaxLength(128)]
+        [Index(IsClustered = false, IsUnique = false)]
         public string Name { get; set; }
         [MaxLength(1024)]
         public string Biography { get; set; }

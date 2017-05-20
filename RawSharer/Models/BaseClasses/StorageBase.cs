@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
 namespace RawSharer.Models.BaseClasses
@@ -15,9 +16,12 @@ namespace RawSharer.Models.BaseClasses
     {
         [Required]
         public StorageType StorageType { get; protected set; }
-        [Required, MaxLength(64)]
+        [Required]
+        [MaxLength(64)]
         public string ContentType { get; protected set; }
+        [Required]
         [MaxLength(32)]
+        [Index(IsClustered = false, IsUnique = true)]
         public string Md5Hash { get; protected set; }
         public long Length { get; protected set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using RawSharer.Models.BaseClasses;
 
 namespace RawSharer.Models.Music
@@ -7,6 +8,7 @@ namespace RawSharer.Models.Music
     public class LyricsSentence : Entity
     {
         [Required]
+        [Index(IsClustered = false, IsUnique = false)]
         public int Sequence { get; set; }
         [Required]
         public TimeSpan StartTime { get; set; }

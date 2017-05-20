@@ -1,5 +1,4 @@
-﻿namespace RawSharer.Common.Helpers {
-    import BrowserType = Enums.BrowserType;
+﻿namespace RawSharer.Common.Utils {
 
     export class Environment {
         private static innerBrowser: BrowserType;
