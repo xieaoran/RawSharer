@@ -11,6 +11,8 @@ namespace RawSharer.LyricsParser.Parsers
     public static class LrcParser
     {
         private static readonly char[] OffsetNexts = { 'f', 'f', 's', 'e', 't' };
+        private static readonly StringBuilder TimeBuilder = new StringBuilder(3);
+        private static readonly LyricsSentenceComparer Comparer = new LyricsSentenceComparer();
 
         /// <summary>
         /// Parse Lyrics from LRC-format Lyrics String
@@ -62,7 +64,7 @@ namespace RawSharer.LyricsParser.Parsers
 
         private static void PostProcess(ParsedLyrics lyrics)
         {
-            lyrics.Sentences.Sort(new LyricsSentenceComparer());
+            lyrics.Sentences.Sort(Comparer);
 
             var hasOffset = lyrics.OffsetMs != 0;
             var offset = TimeSpan.FromMilliseconds(lyrics.OffsetMs);
@@ -109,19 +111,19 @@ namespace RawSharer.LyricsParser.Parsers
 
         private static void ParseSentence(ParsedLyrics lyrics, TextReader reader, char firstChar)
         {
-            var timeBuilder = new StringBuilder();
-            timeBuilder.Append(firstChar);
+            var startTimes = new List<TimeSpan>(4);
 
-            var startTimes = new List<TimeSpan>();
-
-            var parsedTime = ParseTime(reader, timeBuilder);
+            TimeBuilder.Clear();
+            TimeBuilder.Append(firstChar);
+            var parsedTime = ParseTime(reader);
             if (!parsedTime.HasValue) goto IgnoreLine;
             startTimes.Add(parsedTime.Value);
 
             int nextChar;
             while ((nextChar = reader.Read()) == '[')
             {
-                parsedTime = ParseTime(reader, timeBuilder);
+                TimeBuilder.Clear();
+                parsedTime = ParseTime(reader);
                 if (!parsedTime.HasValue) goto IgnoreLine;
                 startTimes.Add(parsedTime.Value);
             }
@@ -194,7 +196,7 @@ namespace RawSharer.LyricsParser.Parsers
             reader.ReadLine();
         }
 
-        private static TimeSpan? ParseTime(TextReader reader, StringBuilder timeBuilder)
+        private static TimeSpan? ParseTime(TextReader reader)
         {
             var flag = 0;
             int minute = 0, second = 0;
@@ -203,32 +205,30 @@ namespace RawSharer.LyricsParser.Parsers
             {
                 if (flag == 0 && nextChar == ':')
                 {
-                    if (!int.TryParse(timeBuilder.ToString(), out minute)) goto IgnoreTime;
-                    timeBuilder.Clear();
+                    if (!int.TryParse(TimeBuilder.ToString(), out minute)) goto IgnoreTime;
+                    TimeBuilder.Clear();
                     flag++;
                 }
                 else if (flag == 1 && (nextChar == '.' || nextChar == ':'))
                 {
-                    if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreTime;
-                    timeBuilder.Clear();
+                    if (!int.TryParse(TimeBuilder.ToString(), out second)) goto IgnoreTime;
+                    TimeBuilder.Clear();
                     flag++;
                 }
-                else timeBuilder.Append(nextChar);
+                else TimeBuilder.Append(nextChar);
             }
             if (flag == 1)
             {
-                if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreTime;
-                timeBuilder.Clear();
+                if (!int.TryParse(TimeBuilder.ToString(), out second)) goto IgnoreTime;
                 return new TimeSpan(0, minute, second);
             }
             else if (flag == 2)
             {
-                if (!int.TryParse(timeBuilder.ToString(), out int millisecond)) goto IgnoreTime;
-                for (var i = timeBuilder.Length; i < 3; i++)
+                if (!int.TryParse(TimeBuilder.ToString(), out int millisecond)) goto IgnoreTime;
+                for (var i = TimeBuilder.Length; i < 3; i++)
                 {
                     millisecond *= 10;
                 }
-                timeBuilder.Clear();
                 return new TimeSpan(0, 0, minute, second, millisecond);
             }
 
