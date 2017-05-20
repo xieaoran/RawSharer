@@ -67,6 +67,7 @@ namespace RawSharer.LyricsParser.Parsers
             var hasOffset = lyrics.OffsetMs != 0;
             var offset = TimeSpan.FromMilliseconds(lyrics.OffsetMs);
 
+            if (lyrics.Sentences.Count == 0) return;
             var previous = lyrics.Sentences[0];
             previous.Sequence = 0;
             if (hasOffset)
@@ -91,14 +92,18 @@ namespace RawSharer.LyricsParser.Parsers
         {
             var leftBracket = reader.Read();
             if (leftBracket == -1) return false;
-            if (leftBracket != '[')
-            {
-                reader.ReadLine();
-                return true;
-            }
+            else if (leftBracket == '\n') return true;
+            else if (leftBracket != '[') goto ParseError;
+
             var firstChar = (char)reader.Read();
-            if (char.IsDigit(firstChar)) ParseSentence(lyrics, reader, firstChar);
+            if (firstChar == -1) return false;
+            else if (leftBracket == '\n') return true;
+            else if (char.IsDigit(firstChar)) ParseSentence(lyrics, reader, firstChar);
             else ParseMetaData(lyrics, reader, firstChar);
+            return true;
+
+            ParseError:
+            reader.ReadLine();
             return true;
         }
 
@@ -107,18 +112,30 @@ namespace RawSharer.LyricsParser.Parsers
             var timeBuilder = new StringBuilder();
             timeBuilder.Append(firstChar);
 
-            var startTimes = new List<TimeSpan> { ParseTime(reader, timeBuilder) };
+            var startTimes = new List<TimeSpan>();
+
+            var parsedTime = ParseTime(reader, timeBuilder);
+            if (!parsedTime.HasValue) goto IgnoreLine;
+            startTimes.Add(parsedTime.Value);
+
             int nextChar;
             while ((nextChar = reader.Read()) == '[')
             {
-                startTimes.Add(ParseTime(reader, timeBuilder));
+                parsedTime = ParseTime(reader, timeBuilder);
+                if (!parsedTime.HasValue) goto IgnoreLine;
+                startTimes.Add(parsedTime.Value);
             }
-            var value = nextChar == '\n' || nextChar == -1 ?
-                string.Empty : (char)nextChar + reader.ReadLine()?.Trim();
+
+            var value = nextChar == -1 || nextChar == '\n' ?
+                string.Empty : (char)nextChar + reader.ReadLine().Trim();
             foreach (var startTime in startTimes)
             {
                 lyrics.Sentences.Add(new ParsedSentence { StartTime = startTime, Value = value });
             }
+            return;
+
+            IgnoreLine:
+            reader.ReadLine();
         }
         private static void ParseMetaData(ParsedLyrics lyrics, TextReader reader, char firstChar)
         {
@@ -126,34 +143,38 @@ namespace RawSharer.LyricsParser.Parsers
             if (firstChar == 'a')
             {
                 var secondChar = reader.Read();
-                if (secondChar == 'l') metaType = MetaType.Album;
+                if (secondChar == -1 || secondChar == '\n') return;
+                else if (secondChar == 'l') metaType = MetaType.Album;
                 else if (secondChar == 'r') metaType = MetaType.Artist;
                 else if (secondChar == 'u') metaType = MetaType.Author;
-                else return;
+                else goto IgnoreLine;
             }
             else if (firstChar == 'b')
             {
                 var secondChar = reader.Read();
-                if (secondChar == 'y') metaType = MetaType.LrcCreator;
-                else return;
+                if (secondChar == -1 || secondChar == '\n') return;
+                else if (secondChar == 'y') metaType = MetaType.LrcCreator;
+                else goto IgnoreLine;
             }
             else if (firstChar == 'o')
             {
                 var nextFiveChars = new char[5];
                 reader.Read(nextFiveChars, 0, 5);
                 if (nextFiveChars.SequenceEqual(OffsetNexts)) metaType = MetaType.Offset;
-                else return;
+                else goto IgnoreLine;
             }
             else if (firstChar == 't')
             {
                 var secondChar = reader.Read();
                 if (secondChar == 'i') metaType = MetaType.Title;
-                else return;
+                else goto IgnoreLine;
             }
-            else return;
+            else if (firstChar == -1 || firstChar == '\n') return;
+            else goto IgnoreLine;
 
             var nextChar = reader.Read();
-            if (nextChar != ':') return;
+            if (nextChar == -1 || nextChar == '\n') return;
+            else if (nextChar != ':') goto IgnoreLine;
 
             var line = reader.ReadLine();
             if (line == null) return;
@@ -167,9 +188,13 @@ namespace RawSharer.LyricsParser.Parsers
             else if (metaType == MetaType.LrcCreator) lyrics.LrcCreator = value;
             else if (metaType == MetaType.Offset) lyrics.OffsetMs = int.Parse(value);
             else if (metaType == MetaType.Title) lyrics.Title = value;
+            return;
+
+            IgnoreLine:
+            reader.ReadLine();
         }
 
-        private static TimeSpan ParseTime(TextReader reader, StringBuilder timeBuilder)
+        private static TimeSpan? ParseTime(TextReader reader, StringBuilder timeBuilder)
         {
             var flag = 0;
             int minute = 0, second = 0;
@@ -178,13 +203,13 @@ namespace RawSharer.LyricsParser.Parsers
             {
                 if (flag == 0 && nextChar == ':')
                 {
-                    minute = int.Parse(timeBuilder.ToString());
+                    if (!int.TryParse(timeBuilder.ToString(), out minute)) goto IgnoreLine;
                     timeBuilder.Clear();
                     flag++;
                 }
                 else if (flag == 1 && (nextChar == '.' || nextChar == ':'))
                 {
-                    second = int.Parse(timeBuilder.ToString());
+                    if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreLine;
                     timeBuilder.Clear();
                     flag++;
                 }
@@ -192,13 +217,13 @@ namespace RawSharer.LyricsParser.Parsers
             }
             if (flag == 1)
             {
-                second = int.Parse(timeBuilder.ToString());
+                if (!int.TryParse(timeBuilder.ToString(), out second)) goto IgnoreLine;
                 timeBuilder.Clear();
                 return new TimeSpan(0, minute, second);
             }
-            else
+            else if (flag == 2)
             {
-                var millisecond = int.Parse(timeBuilder.ToString());
+                if (!int.TryParse(timeBuilder.ToString(), out int millisecond)) goto IgnoreLine;
                 for (var i = timeBuilder.Length; i < 3; i++)
                 {
                     millisecond *= 10;
@@ -206,6 +231,9 @@ namespace RawSharer.LyricsParser.Parsers
                 timeBuilder.Clear();
                 return new TimeSpan(0, 0, minute, second, millisecond);
             }
+
+            IgnoreLine:
+            return null;
         }
     }
 }
