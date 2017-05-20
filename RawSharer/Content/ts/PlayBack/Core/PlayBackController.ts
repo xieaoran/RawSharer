@@ -44,6 +44,8 @@
 
         public seek(sentenceIndex: number): void {
             if (sentenceIndex < 0) sentenceIndex = 0;
+            else if (sentenceIndex > this.sentenceTimes.length - 1)
+                sentenceIndex = this.sentenceTimes.length - 1;
             const seekTime = this.sentenceTimes[sentenceIndex];
             this.player.seek(seekTime);
         }
