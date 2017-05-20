@@ -48,6 +48,19 @@
             this.player.seek(seekTime);
         }
 
+        private getSentenceIndex(currentTime: number): number {
+            for (let index = this.currentSentenceIndex; index < this.sentenceTimes.length; index++) {
+                if (currentTime < this.sentenceTimes[index]) return index - 1;
+            }
+            if (currentTime < this.sentenceTimes[0]) return 0;
+            else if (currentTime > this.sentenceTimes[this.sentenceTimes.length - 1])
+                return this.sentenceTimes.length - 1;
+            else for (let index = 0; index < this.currentSentenceIndex; index++) {
+                if (currentTime < this.sentenceTimes[index]) return index - 1;
+            }
+            return -1;
+        }
+
         private playerPlayingHandler = () => {
             if (this.currentState === PlayerState.Seeking) {
                 this.currentState = PlayerState.Playing;
@@ -70,15 +83,7 @@
         }
 
         private playerTimeUpdateHandler = (currentTime: number) => {
-            if (currentTime < this.sentenceTimes[0]) this.currentSentenceIndex = 0;
-            else if (currentTime > this.sentenceTimes[this.sentenceTimes.length - 1])
-                this.currentSentenceIndex = this.sentenceTimes.length - 1;
-            else for (let index = 1; index < this.sentenceTimes.length; index++) {
-                if (currentTime < this.sentenceTimes[index]) {
-                    this.currentSentenceIndex = index - 1;
-                    break;
-                }
-            }
+            this.currentSentenceIndex = this.getSentenceIndex(currentTime);
             if (this.currentSentenceIndex === this.lastSentenceIndex) return;
             this.container.readLine(this.lastSentenceIndex, this.currentSentenceIndex);
             this.lastSentenceIndex = this.currentSentenceIndex;
