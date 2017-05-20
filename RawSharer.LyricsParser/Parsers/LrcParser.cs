@@ -43,14 +43,21 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(Stream lrcStream)
         {
-            var result = new ParsedLyrics();
+            try
+            {
+                var result = new ParsedLyrics();
 
-            var reader = new StreamReader(lrcStream);
-            while (ParseLine(result, reader)) { }
-            reader.Close();
+                var reader = new StreamReader(lrcStream);
+                while (ParseLine(result, reader)) { }
+                reader.Close();
 
-            PostProcess(result);
-            return result;
+                PostProcess(result);
+                return result;
+            }
+            catch (Exception exception)
+            {
+                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
+            }
         }
 
         private static void PostProcess(ParsedLyrics lyrics)
@@ -106,8 +113,8 @@ namespace RawSharer.LyricsParser.Parsers
             {
                 startTimes.Add(ParseTime(reader, timeBuilder));
             }
-            var value = nextChar == '\n' || nextChar == -1 ? 
-                string.Empty : (char) nextChar + reader.ReadLine()?.Trim();
+            var value = nextChar == '\n' || nextChar == -1 ?
+                string.Empty : (char)nextChar + reader.ReadLine()?.Trim();
             foreach (var startTime in startTimes)
             {
                 lyrics.Sentences.Add(new ParsedSentence { StartTime = startTime, Value = value });
