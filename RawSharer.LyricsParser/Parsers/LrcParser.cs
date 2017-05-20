@@ -90,12 +90,12 @@ namespace RawSharer.LyricsParser.Parsers
                 return true;
             }
             var firstChar = (char)reader.Read();
-            if (char.IsDigit(firstChar)) ParseSentence(lyrics, firstChar, reader);
-            else ParseMetaData(lyrics, firstChar, reader);
+            if (char.IsDigit(firstChar)) ParseSentence(lyrics, reader, firstChar);
+            else ParseMetaData(lyrics, reader, firstChar);
             return true;
         }
 
-        private static void ParseSentence(ParsedLyrics lyrics, char firstChar, TextReader reader)
+        private static void ParseSentence(ParsedLyrics lyrics, TextReader reader, char firstChar)
         {
             var timeBuilder = new StringBuilder();
             timeBuilder.Append(firstChar);
@@ -113,7 +113,7 @@ namespace RawSharer.LyricsParser.Parsers
                 lyrics.Sentences.Add(new ParsedSentence { StartTime = startTime, Value = value });
             }
         }
-        private static void ParseMetaData(ParsedLyrics lyrics, char firstChar, TextReader reader)
+        private static void ParseMetaData(ParsedLyrics lyrics, TextReader reader, char firstChar)
         {
             MetaType metaType;
             if (firstChar == 'a')
