@@ -21,21 +21,14 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(string lrcString)
         {
-            try
-            {
-                var result = new ParsedLyrics();
+            var result = new ParsedLyrics();
 
-                var reader = new StringReader(lrcString);
-                while (ParseLine(result, reader)) { }
-                reader.Close();
+            var reader = new StringReader(lrcString);
+            while (ParseLine(result, reader)) { }
+            reader.Close();
 
-                PostProcess(result);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
-            }
+            PostProcess(result);
+            return result;
         }
 
         /// <summary>
@@ -45,21 +38,14 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(Stream lrcStream)
         {
-            try
-            {
-                var result = new ParsedLyrics();
+            var result = new ParsedLyrics();
 
-                var reader = new StreamReader(lrcStream);
-                while (ParseLine(result, reader)) { }
-                reader.Close();
+            var reader = new StreamReader(lrcStream);
+            while (ParseLine(result, reader)) { }
+            reader.Close();
 
-                PostProcess(result);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
-            }
+            PostProcess(result);
+            return result;
         }
 
         private static void PostProcess(ParsedLyrics lyrics)
@@ -75,8 +61,7 @@ namespace RawSharer.LyricsParser.Parsers
             if (hasOffset)
             {
                 previous.StartTime = previous.StartTime.Add(offset);
-                if (previous.StartTime < TimeSpan.Zero)
-                    throw new ParseException(Resources.ExceptionMessages.InvalidOffset);
+                if (previous.StartTime < TimeSpan.Zero) throw new ArithmeticException();
             }
             for (var i = 1; i < lyrics.Sentences.Count; i++)
             {
