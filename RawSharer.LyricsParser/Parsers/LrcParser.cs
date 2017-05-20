@@ -21,20 +21,9 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(string lrcString)
         {
-            try
+            using (var reader = new StringReader(lrcString))
             {
-                var result = new ParsedLyrics();
-
-                var reader = new StringReader(lrcString);
-                while (ParseLine(result, reader)) { }
-                reader.Close();
-
-                PostProcess(result);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
+                return Parse(reader);
             }
         }
 
@@ -45,13 +34,24 @@ namespace RawSharer.LyricsParser.Parsers
         /// <returns>Parsed Lyrics</returns>
         public static ParsedLyrics Parse(Stream lrcStream)
         {
+            using (var reader = new StreamReader(lrcStream, Encoding.UTF8, false, 1024, true))
+            {
+                return Parse(reader);
+            }
+        }
+
+        /// <summary>
+        /// Parse Lyrics from TextReader
+        /// </summary>
+        /// <param name="reader">TextReader</param>
+        /// <returns>Parsed Lyrics</returns>
+        public static ParsedLyrics Parse(TextReader reader)
+        {
             try
             {
                 var result = new ParsedLyrics();
 
-                var reader = new StreamReader(lrcStream);
                 while (ParseLine(result, reader)) { }
-                reader.Close();
 
                 PostProcess(result);
                 return result;
