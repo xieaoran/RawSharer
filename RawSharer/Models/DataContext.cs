@@ -1,6 +1,6 @@
-﻿using RawSharer.Models.Music;
-using RawSharer.Models.Storage;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using RawSharer.Models.Entities.Music;
+using RawSharer.Models.Entities.Storage;
 
 namespace RawSharer.Models
 {
@@ -11,6 +11,7 @@ namespace RawSharer.Models
         public DataContext() : base("name=RawSharerData")
         {
             Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

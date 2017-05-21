@@ -76,6 +76,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -84,6 +87,12 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -141,32 +150,39 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Configs\FormatElement.cs" />
     <Compile Include="Configs\LocalStorageElement.cs" />
     <Compile Include="Configs\RuntimeConfig.cs" />
-    <Compile Include="Controllers\BlobsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PlayBackController.cs" />
-    <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\Core\BlobsController.cs" />
+    <Compile Include="Controllers\UI\HomeController.cs" />
+    <Compile Include="Controllers\UI\PlayBackController.cs" />
+    <Compile Include="Controllers\WebApi\TrackVersionController.cs" />
+    <Compile Include="Controllers\UI\UploadController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Md5Helper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\BaseClasses\Entity.cs" />
-    <Compile Include="Models\Music\Album.cs" />
-    <Compile Include="Models\Music\Artist.cs" />
+    <Compile Include="Models\DTO\Base\EntityDTO.cs" />
+    <Compile Include="Models\DTO\Base\StorageBaseDTO.cs" />
+    <Compile Include="Models\DTO\Music\Forward\LocalBlobDTO.cs" />
+    <Compile Include="Models\DTO\Music\Reverse\TrackDTOReverse.cs" />
+    <Compile Include="Models\DTO\Music\Forward\TrackVersionDTO.cs" />
+    <Compile Include="Models\Entities\Base\Entity.cs" />
+    <Compile Include="Models\Entities\Music\Album.cs" />
+    <Compile Include="Models\Entities\Music\Artist.cs" />
     <Compile Include="Models\DataContext.cs" />
-    <Compile Include="Models\Music\Genre.cs" />
-    <Compile Include="Models\Music\Lyrics.cs" />
-    <Compile Include="Models\Music\LyricsSentence.cs" />
-    <Compile Include="Models\Music\TrackVersion.cs" />
-    <Compile Include="Models\Storage\LocalBlob.cs" />
-    <Compile Include="Models\Music\Track.cs" />
-    <Compile Include="Models\BaseClasses\StorageBase.cs" />
+    <Compile Include="Models\Entities\Music\Genre.cs" />
+    <Compile Include="Models\Entities\Music\Lyrics.cs" />
+    <Compile Include="Models\Entities\Music\LyricsSentence.cs" />
+    <Compile Include="Models\Entities\Music\TrackVersion.cs" />
+    <Compile Include="Models\Entities\Music\Track.cs" />
+    <Compile Include="Models\Entities\Base\StorageBase.cs" />
+    <Compile Include="Models\Entities\Storage\LocalBlob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configs\RawSharerSection.cs" />
-    <Compile Include="ViewModels\PlayBackViewModel.cs" />
+    <Compile Include="ViewModels\UI\PlayBackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\common\animations.css" />
@@ -181,19 +197,7 @@
     <Content Include="Content\css\upload.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\frameworks\fine-uploader\continue.gif" />
-    <Content Include="Content\frameworks\fine-uploader\edit.gif" />
-    <Content Include="Content\frameworks\fine-uploader\fine-uploader-gallery.css" />
-    <Content Include="Content\frameworks\fine-uploader\jquery.fine-uploader.js" />
-    <Content Include="Content\frameworks\fine-uploader\loading.gif" />
-    <Content Include="Content\frameworks\fine-uploader\pause.gif" />
-    <Content Include="Content\frameworks\fine-uploader\placeholders\not_available-generic.png" />
-    <Content Include="Content\frameworks\fine-uploader\placeholders\waiting-generic.png" />
-    <Content Include="Content\frameworks\fine-uploader\processing.gif" />
-    <Content Include="Content\frameworks\fine-uploader\retry.gif" />
-    <Content Include="Content\frameworks\fine-uploader\templates\gallery.html" />
     <Content Include="Content\js\base.js" />
-    <Content Include="Content\js\helpers.js" />
     <Content Include="Content\js\upload.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -240,7 +244,6 @@
     <Content Include="Views\Home\Base.cshtml" />
     <Content Include="Views\PlayBack\PlayBack.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
-    <Content Include="Views\Upload\Template.cshtml" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <Content Include="WinJS\css\ui-dark.css" />
@@ -285,6 +288,9 @@
       <Project>{8ce5f7df-18c1-471f-be2c-83ee7b2d9c4a}</Project>
       <Name>RawSharer.LyricsParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

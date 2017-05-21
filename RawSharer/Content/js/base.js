@@ -1,6 +1,6 @@
 ﻿WinJS.Namespace.define("Base", {
     Control: WinJS.Class.define(function (id) {
-        this.ID = id;
+        this.Id = id;
         this.JQuerySelector = $("#" + id);
         this.DOM = this.JQuerySelector[0];
     }),
@@ -17,7 +17,7 @@ WinJS.Namespace.defineWithParent(Base, "Controls", {
 
 WinJS.Namespace.defineWithParent(Base, "Pages", {
     Index: WinJS.UI.Pages.define("./Pages/Home/Index"),
-    PlayBack: WinJS.UI.Pages.define("./Pages/PlayBack/TrackVersion/E202D41C-364D-4DD2-9751-116B3541F1CE", {
+    PlayBack: WinJS.UI.Pages.define("./Pages/PlayBack/TrackVersion/958E478E-502B-432B-BCBB-E9CE682F85A9", {
         ready: function () {
             var player = new RawSharer.PlayBack.UI.Controls.Playing.Player("player");
             var stateIndicator = new RawSharer.PlayBack.UI.Controls.Playing.StateIndicator("player-icon", "cover-img");
@@ -25,27 +25,7 @@ WinJS.Namespace.defineWithParent(Base, "Pages", {
             var controller = new RawSharer.PlayBack.Core.PlayBackController(player, stateIndicator, container);
         }
     }),
-    Upload: WinJS.UI.Pages.define("./Pages/Upload",
-        {
-            ready: function (element, options) {
-                Upload.Load();
-                $("#uploader-container").fineUploader({
-                    template: "qq-template",
-                    request: {
-                        endpoint: "/server/uploads"
-                    },
-                    thumbnails: {
-                        placeholders: {
-                            waitingPath: "/Content/frameworks/fine-uploader/placeholders/waiting-generic.png",
-                            notAvailablePath: "/Content/frameworks/fine-uploader/placeholders/not_available-generic.png"
-                        }
-                    },
-                    validation: {
-                        allowedExtensions: ["wav", "flac", "ape", "tak", "tta"]
-                    }
-                });
-            }
-        })
+    Upload: WinJS.UI.Pages.define("./Pages/Upload", {})
 });
 
 WinJS.Namespace.defineWithParent(Base, "Navigation", {

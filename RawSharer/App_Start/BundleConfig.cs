@@ -24,10 +24,6 @@ namespace RawSharer
                       "~/WinJS/js/base.min.js",
                       "~/WinJS/js/ui.min.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/fine-uploader").Include(
-                    "~/Content/frameworks/fine-uploader/jquery.fine-uploader.js"
-                ));
-
             bundles.Add(new ScriptBundle("~/bundles/rawsharer")
                 .IncludeDirectory("~/Content/ts/Common", "*.js", true)
                 .IncludeDirectory("~/Content/ts/PlayBack/Utils", "*.js")
@@ -38,7 +34,7 @@ namespace RawSharer
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/WinJS/css/ui-dark.min.css",
                       "~/Content/frameworks/bootstrap/bootstrap.min.css",
-                      "~/Content/frameworks/fine-uploader/fine-uploader-gallery.css",
+                      "~/Content/font-awesome.min.css",
                       "~/Content/css/*.css",
                       "~/Content/css/common/*.css"));
         }

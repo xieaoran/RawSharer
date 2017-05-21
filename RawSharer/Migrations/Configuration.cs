@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using RawSharer.Configs;
 using RawSharer.Models;
-using RawSharer.Models.BaseClasses;
-using RawSharer.Models.Music;
-using RawSharer.Models.Storage;
+using RawSharer.Models.Entities.Base;
+using RawSharer.Models.Entities.Music;
+using RawSharer.Models.Entities.Storage;
 
 namespace RawSharer.Migrations
 {
