@@ -2,10 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RawSharer.Models.Entities.Base
+namespace RawSharer.Shared.Entities
 {
-    [Serializable]
-    public abstract class Entity
+    public abstract class EntityBase
     {
         [Key]
         [Required]

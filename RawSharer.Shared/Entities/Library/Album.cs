@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using RawSharer.Configs;
-using RawSharer.Models.Entities.Base;
-using RawSharer.Models.Entities.Storage;
+using RawSharer.Shared.Entities.Storage;
 
-namespace RawSharer.Models.Entities.Music
+namespace RawSharer.Shared.Entities.Library
 {
-    public class Album: Entity
+    public class Album: EntityBase
     {
         [Required]
         [MaxLength(128)]
@@ -20,10 +17,13 @@ namespace RawSharer.Models.Entities.Music
         public byte? DiskCount { get; set; }
         public byte? TrackCount { get; set; }
 
+        [MaxLength(128)]
+        [Index(IsClustered = false, IsUnique = false)]
+        public string Genre { get; set; }
+
         public virtual ICollection<Artist> Artists { get; set; }
         public virtual ICollection<Track> Tracks { get; set; }
-        public virtual Genre Genre { get; set; }
-        public virtual LocalBlob Image { get; set; }
+        public virtual BlobStorage ImageStorage { get; set; }
 
         public Album(string name,
             string releaseDate = null, byte? diskCount = null,
@@ -37,11 +37,6 @@ namespace RawSharer.Models.Entities.Music
 
             Artists = new List<Artist>();
             Tracks = new List<Track>();
-        }
-
-        public string GetArtists()
-        {
-            return string.Join(RuntimeConfig.Config.Format.ArtistSeparator, Artists.Select(artist => artist.Name));
         }
 
         public Album()

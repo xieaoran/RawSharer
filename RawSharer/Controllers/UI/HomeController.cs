@@ -13,5 +13,15 @@ namespace RawSharer.Controllers.UI
         {
             return View();
         }
+
+        public ActionResult PlayBack()
+        {
+            return View();
+        }
+
+        public ActionResult Upload()
+        {
+            return View();
+        }
     }
 }

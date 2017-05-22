@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using RawSharer.Models.Entities.Base;
-using RawSharer.Models.Entities.Storage;
+using RawSharer.Shared.Entities.Storage;
 
-namespace RawSharer.Models.Entities.Music
+namespace RawSharer.Shared.Entities.Library
 {
-    public class Artist : Entity
+    public class Artist : EntityBase
     {
         [Required]
         [MaxLength(128)]
@@ -16,7 +15,7 @@ namespace RawSharer.Models.Entities.Music
         [MaxLength(1024)]
         public string Biography { get; set; }
 
-        public virtual LocalBlob Image { get; set; }
+        public virtual BlobStorage ImageStorage { get; set; }
         public virtual ICollection<Album> Albums { get; set; }
         public virtual ICollection<Track> Tracks { get; set; }
 

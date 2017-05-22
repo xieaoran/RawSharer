@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using RawSharer.Configs;
-using RawSharer.Models.Entities.Base;
 
-namespace RawSharer.Models.Entities.Music
+namespace RawSharer.Shared.Entities.Library
 {
-    public class Track : Entity
+    public class Track : EntityBase
     {
         [Required]
         [MaxLength(128)]
@@ -38,11 +35,6 @@ namespace RawSharer.Models.Entities.Music
         public Track()
         {
             // Reserved for Serialization
-        }
-        public string GetArtists()
-        {
-            return string.Join(RuntimeConfig.Config.Format.ArtistSeparator,
-                Artists.Select(artist => artist.Name));
         }
     }
 }

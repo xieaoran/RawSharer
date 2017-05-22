@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using RawSharer.Models;
+using RawSharer.Data;
 using VikingErik.Mvc.ResumingActionResults;
 
 namespace RawSharer.Controllers.Core
@@ -9,11 +9,11 @@ namespace RawSharer.Controllers.Core
     {
         public ActionResult Get(Guid id)
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new LibraryDbContext())
             {
-                var blob = dataContext.LocalBlobs.Find(id);
+                var blob = dataContext.BlobStorages.Find(id);
                 if (blob == null) return HttpNotFound();
-                return new ResumingFileStreamResult(blob.GetReadStream(), blob.ContentType);
+                return new ResumingFileStreamResult(blob.GetReadStream(), blob.MimeType);
             }
         }
     }

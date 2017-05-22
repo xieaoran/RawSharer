@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using RawSharer.Models;
-using RawSharer.Models.Entities.Music;
+using RawSharer.Data;
+using RawSharer.Shared.Entities.Library;
 
 namespace RawSharer.Controllers.WebApi
 {
@@ -10,7 +10,7 @@ namespace RawSharer.Controllers.WebApi
     {
         public IEnumerable<TrackVersion> Get()
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new LibraryDbContext())
             {
                 return dataContext.TrackVersions.Include("OriginalStorage")
                     .Include("ConvertedStorage")
@@ -20,7 +20,7 @@ namespace RawSharer.Controllers.WebApi
                     .Include("Track.Artists")
                     .Include("Track.Album")
                     .Include("Track.Album.Genre")
-                    .Include("Track.Album.Image")
+                    .Include("Track.Album.ImageStorage")
                     .ToArray();
             }
         }

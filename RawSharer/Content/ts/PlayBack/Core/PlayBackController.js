@@ -97,7 +97,7 @@ var RawSharer;
                         }
                         return this.sentenceTimes.length - 1;
                     }
-                    else if (currentTime < this.sentenceTimes[this.currentSentenceIndex]) {
+                    else {
                         for (var index = this.currentSentenceIndex - 1; index >= 0; index--) {
                             if (currentTime > this.sentenceTimes[index])
                                 return index;

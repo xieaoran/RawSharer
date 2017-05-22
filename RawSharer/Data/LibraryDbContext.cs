@@ -1,23 +1,18 @@
 ﻿using System.Data.Entity;
-using RawSharer.Models.Entities.Music;
-using RawSharer.Models.Entities.Storage;
+using RawSharer.Shared.Entities.Library;
+using RawSharer.Shared.Entities.Storage;
 
-namespace RawSharer.Models
+namespace RawSharer.Data
 {
-    internal class DataContext : DbContext
+    public class LibraryDbContext : DbContext
     {
-        internal DataContext() : base("name=RawSharerData")
+        public LibraryDbContext() : base("RawSharerData")
         {
             Configuration.LazyLoadingEnabled = false;
-            Configuration.ProxyCreationEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Genre>()
-                .HasMany(genre => genre.Albums)
-                .WithOptional(album => album.Genre);
-
             modelBuilder.Entity<Artist>()
                 .HasMany(artist => artist.Albums)
                 .WithMany(album => album.Artists)
@@ -33,13 +28,13 @@ namespace RawSharer.Models
                         .MapRightKey("TrackId")
                         .ToTable("Artist_Track"));
             modelBuilder.Entity<Artist>()
-                .HasOptional(artist => artist.Image);
+                .HasOptional(artist => artist.ImageStorage);
 
             modelBuilder.Entity<Album>()
                 .HasMany(album => album.Tracks)
                 .WithOptional(track => track.Album);
             modelBuilder.Entity<Album>()
-                .HasOptional(album => album.Image);
+                .HasOptional(album => album.ImageStorage);
 
             modelBuilder.Entity<Track>()
                 .HasMany(track => track.Versions)
@@ -53,19 +48,13 @@ namespace RawSharer.Models
             modelBuilder.Entity<TrackVersion>()
                 .HasOptional(version => version.ConvertedStorage);
 
-            modelBuilder.Entity<Lyrics>()
-                .HasMany(lyrics => lyrics.Sentences)
-                .WithOptional(lyricsSentence => lyricsSentence.Lyrics);
-
             base.OnModelCreating(modelBuilder);
         }
-        internal virtual DbSet<Album> Albums { get; set; }
-        internal virtual DbSet<Artist> Artists { get; set; }
-        internal virtual DbSet<Genre> Genres { get; set; }
-        internal virtual DbSet<Track> Tracks { get; set; }
-        internal virtual DbSet<TrackVersion> TrackVersions { get; set; }
-        internal virtual DbSet<Lyrics> Lyrics { get; set; }
-        internal virtual DbSet<LyricsSentence> LyricsSentences { get; set; }
-        internal virtual DbSet<LocalBlob> LocalBlobs { get; set; }
+        public virtual DbSet<Album> Albums { get; set; }
+        public virtual DbSet<Artist> Artists { get; set; }
+        public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<TrackVersion> TrackVersions { get; set; }
+        public virtual DbSet<Lyrics> Lyrics { get; set; }
+        public virtual DbSet<BlobStorage> BlobStorages { get; set; }
     }
 }
