@@ -6,7 +6,7 @@ using RawSharer.ViewModels.UI;
 
 namespace RawSharer.Controllers.UI
 {
-    public class PlayBackController : Controller
+    public sealed class PlayBackController : Controller
     {
         public ActionResult TrackVersion(Guid id)
         {

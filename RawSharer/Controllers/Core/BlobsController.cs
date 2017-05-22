@@ -5,7 +5,7 @@ using VikingErik.Mvc.ResumingActionResults;
 
 namespace RawSharer.Controllers.Core
 {
-    public class BlobsController : Controller
+    public sealed class BlobsController : Controller
     {
         public ActionResult Get(Guid id)
         {

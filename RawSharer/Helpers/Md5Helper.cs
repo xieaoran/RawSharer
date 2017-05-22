@@ -4,9 +4,9 @@ using System.Text;
 
 namespace RawSharer.Helpers
 {
-    public static class Md5Helper
+    internal static class Md5Helper
     {
-        public static string GetMd5HashFromStream(Stream stream)
+        internal static string GetMd5HashFromStream(Stream stream)
         {
             var md5Builder = new StringBuilder(32);
             var md5Provider = new MD5CryptoServiceProvider();

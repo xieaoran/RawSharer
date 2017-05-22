@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using RawSharer.Models.Entities.Base;
 
-namespace RawSharer.Models.Entities.Base
+namespace RawSharer.Models.Entities.Storage
 {
     public enum StorageType
     {

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using RawSharer.Configs;
 using RawSharer.Models;
-using RawSharer.Models.Entities.Base;
 using RawSharer.Models.Entities.Music;
 using RawSharer.Models.Entities.Storage;
 
@@ -12,7 +10,7 @@ namespace RawSharer.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<RawSharer.Models.DataContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DataContext>
     {
         public Configuration()
         {
@@ -42,7 +40,7 @@ namespace RawSharer.Migrations
             }
         }
 
-        public static void FillDemoData(DataContext context)
+        private static void FillDemoData(DataContext context)
         {
             RuntimeConfig.RegisterConfigs();
 

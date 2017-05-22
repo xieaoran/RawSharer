@@ -6,7 +6,7 @@ using RawSharer.Models.Entities.Music;
 
 namespace RawSharer.Controllers.WebApi
 {
-    public class TrackVersionController : ApiController
+    public sealed class TrackVersionController : ApiController
     {
         public IEnumerable<TrackVersion> Get()
         {

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
 namespace RawSharer.Models.Entities.Base
 {
-    [JsonObject]
-    [DataContract]
+    [Serializable]
     public abstract class Entity
     {
         [Key]

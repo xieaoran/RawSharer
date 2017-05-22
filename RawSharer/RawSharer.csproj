@@ -164,11 +164,6 @@
     </Compile>
     <Compile Include="Helpers\Md5Helper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\DTO\Base\EntityDTO.cs" />
-    <Compile Include="Models\DTO\Base\StorageBaseDTO.cs" />
-    <Compile Include="Models\DTO\Music\Forward\LocalBlobDTO.cs" />
-    <Compile Include="Models\DTO\Music\Reverse\TrackDTOReverse.cs" />
-    <Compile Include="Models\DTO\Music\Forward\TrackVersionDTO.cs" />
     <Compile Include="Models\Entities\Base\Entity.cs" />
     <Compile Include="Models\Entities\Music\Album.cs" />
     <Compile Include="Models\Entities\Music\Artist.cs" />
@@ -178,7 +173,7 @@
     <Compile Include="Models\Entities\Music\LyricsSentence.cs" />
     <Compile Include="Models\Entities\Music\TrackVersion.cs" />
     <Compile Include="Models\Entities\Music\Track.cs" />
-    <Compile Include="Models\Entities\Base\StorageBase.cs" />
+    <Compile Include="Models\Entities\Storage\StorageBase.cs" />
     <Compile Include="Models\Entities\Storage\LocalBlob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configs\RawSharerSection.cs" />

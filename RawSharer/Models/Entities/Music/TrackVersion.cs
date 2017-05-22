@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using RawSharer.Models.Entities.Base;
 using RawSharer.Models.Entities.Storage;
 
@@ -27,6 +28,5 @@ namespace RawSharer.Models.Entities.Music
         {
             // Reserved For Serialization
         }
-
     }
 }

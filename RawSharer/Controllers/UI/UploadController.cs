@@ -2,7 +2,7 @@
 
 namespace RawSharer.Controllers.UI
 {
-    public class UploadController : Controller
+    public sealed class UploadController : Controller
     {
         public ActionResult Upload()
         {

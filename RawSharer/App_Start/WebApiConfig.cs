@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace RawSharer

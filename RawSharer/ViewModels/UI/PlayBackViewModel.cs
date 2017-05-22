@@ -2,11 +2,11 @@
 
 namespace RawSharer.ViewModels.UI
 {
-    public class PlayBackViewModel
+    internal sealed class PlayBackViewModel
     {
-        public TrackVersion TrackVersion { get; private set; }
+        internal TrackVersion TrackVersion { get; }
 
-        public PlayBackViewModel(TrackVersion trackVersion)
+        internal PlayBackViewModel(TrackVersion trackVersion)
         {
             TrackVersion = trackVersion;
         }

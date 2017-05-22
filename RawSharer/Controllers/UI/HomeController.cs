@@ -2,7 +2,7 @@
 
 namespace RawSharer.Controllers.UI
 {
-    public class HomeController : Controller
+    public sealed class HomeController : Controller
     {
         public ActionResult Index()
         {

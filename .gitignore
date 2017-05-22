@@ -252,4 +252,4 @@ paket-files/
 *.sln.iml
 
 # Demo Storage
-Storage/
+/RawSharer/Storage/

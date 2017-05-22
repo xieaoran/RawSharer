@@ -4,11 +4,9 @@ using RawSharer.Models.Entities.Storage;
 
 namespace RawSharer.Models
 {
-
-
-    public class DataContext : DbContext
+    internal class DataContext : DbContext
     {
-        public DataContext() : base("name=RawSharerData")
+        internal DataContext() : base("name=RawSharerData")
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
@@ -61,13 +59,13 @@ namespace RawSharer.Models
 
             base.OnModelCreating(modelBuilder);
         }
-        public virtual DbSet<Album> Albums { get; set; }
-        public virtual DbSet<Artist> Artists { get; set; }
-        public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<Track> Tracks { get; set; }
-        public virtual DbSet<TrackVersion> TrackVersions { get; set; }
-        public virtual DbSet<Lyrics> Lyrics { get; set; }
-        public virtual DbSet<LyricsSentence> LyricsSentences { get; set; }
-        public virtual DbSet<LocalBlob> LocalBlobs { get; set; }
+        internal virtual DbSet<Album> Albums { get; set; }
+        internal virtual DbSet<Artist> Artists { get; set; }
+        internal virtual DbSet<Genre> Genres { get; set; }
+        internal virtual DbSet<Track> Tracks { get; set; }
+        internal virtual DbSet<TrackVersion> TrackVersions { get; set; }
+        internal virtual DbSet<Lyrics> Lyrics { get; set; }
+        internal virtual DbSet<LyricsSentence> LyricsSentences { get; set; }
+        internal virtual DbSet<LocalBlob> LocalBlobs { get; set; }
     }
 }
