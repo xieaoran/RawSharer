@@ -8,28 +8,28 @@ var RawSharer;
             (function (Controls) {
                 var Playing;
                 (function (Playing) {
-                    var Player = (function () {
-                        function Player(playerId) {
+                    class Player {
+                        constructor(playerId) {
                             this.playerFront = document.getElementById(playerId);
                         }
-                        Player.prototype.switchState = function () {
+                        switchState() {
                             if (this.playerFront.paused)
                                 this.playerFront.play();
                             else
                                 this.playerFront.pause();
-                        };
-                        Player.prototype.seek = function (seekTime) {
-                            var minDistance = this.playerFront.duration;
-                            var minTime = 0;
-                            for (var index = 0; index < this.playerFront.seekable.length; index++) {
-                                var seekStart = this.playerFront.seekable.start(index);
-                                var seekEnd = this.playerFront.seekable.end(index);
+                        }
+                        seek(seekTime) {
+                            let minDistance = this.playerFront.duration;
+                            let minTime = 0;
+                            for (let index = 0; index < this.playerFront.seekable.length; index++) {
+                                const seekStart = this.playerFront.seekable.start(index);
+                                const seekEnd = this.playerFront.seekable.end(index);
                                 if (seekTime > seekStart && seekTime < seekEnd) {
                                     this.playerFront.currentTime = seekTime;
                                     return;
                                 }
-                                var seekStartDistance = Math.abs(seekTime - seekStart);
-                                var seekEndDistance = Math.abs(seekTime - seekEnd);
+                                const seekStartDistance = Math.abs(seekTime - seekStart);
+                                const seekEndDistance = Math.abs(seekTime - seekEnd);
                                 if (seekStartDistance < minDistance) {
                                     minTime = seekStart;
                                     minDistance = seekStartDistance;
@@ -40,23 +40,20 @@ var RawSharer;
                                 }
                             }
                             this.playerFront.currentTime = minTime;
-                        };
-                        Player.prototype.attachPlaying = function (playing) {
+                        }
+                        attachPlaying(playing) {
                             this.playerFront.onplaying = playing;
-                        };
-                        Player.prototype.attachPause = function (pause) {
-                            var _this = this;
-                            this.playerFront.onpause = function () { return pause(_this.playerFront.ended); };
-                        };
-                        Player.prototype.attachSeeking = function (seeking) {
+                        }
+                        attachPause(pause) {
+                            this.playerFront.onpause = () => pause(this.playerFront.ended);
+                        }
+                        attachSeeking(seeking) {
                             this.playerFront.onseeking = seeking;
-                        };
-                        Player.prototype.attachTimeUpdate = function (timeUpdate) {
-                            var _this = this;
-                            this.playerFront.ontimeupdate = function () { return timeUpdate(_this.playerFront.currentTime); };
-                        };
-                        return Player;
-                    }());
+                        }
+                        attachTimeUpdate(timeUpdate) {
+                            this.playerFront.ontimeupdate = () => timeUpdate(this.playerFront.currentTime);
+                        }
+                    }
                     Playing.Player = Player;
                 })(Playing = Controls.Playing || (Controls.Playing = {}));
             })(Controls = UI.Controls || (UI.Controls = {}));

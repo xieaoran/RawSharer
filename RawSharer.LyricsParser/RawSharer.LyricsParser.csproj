@@ -49,6 +49,8 @@
     <Compile Include="Models\ParsedSentence.cs" />
     <Compile Include="Parsers\LrcParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\LrcParserInnerSettings.cs" />
+    <Compile Include="Settings\LrcParserSettings.cs" />
     <Compile Include="Utils\LyricsSentenceComparer.cs" />
     <Compile Include="Utils\MetaType.cs" />
     <Compile Include="Utils\ParseException.cs" />

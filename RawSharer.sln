@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawSharer", "RawSharer\RawSharer.csproj", "{539B14EE-A08A-49FC-95AC-CB14BA1CFE1C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawSharer.LyricsParser", "RawSharer.LyricsParser\RawSharer.LyricsParser.csproj", "{8CE5F7DF-18C1-471F-BE2C-83EE7B2D9C4A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deprecated", "Deprecated", "{138F8530-3CCA-4EA0-9DCA-756EF8F89ED3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawSharer.Shared", "RawSharer.Shared\RawSharer.Shared.csproj", "{403B8B5C-B66D-454B-B81B-CFF1B83B1C66}"
 EndProject
@@ -32,8 +30,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{8CE5F7DF-18C1-471F-BE2C-83EE7B2D9C4A} = {138F8530-3CCA-4EA0-9DCA-756EF8F89ED3}
 	EndGlobalSection
 EndGlobal

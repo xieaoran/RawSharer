@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using System.Web.Http;
 using RawSharer.Data;
 using RawSharer.Shared.Entities.Library;
@@ -8,11 +9,11 @@ namespace RawSharer.Controllers.WebApi
 {
     public sealed class TrackVersionController : ApiController
     {
-        public IEnumerable<TrackVersion> Get()
+        public async Task<IEnumerable<TrackVersion>> Get()
         {
             using (var dataContext = new LibraryDbContext())
             {
-                return dataContext.TrackVersions.Include("OriginalStorage")
+                return await dataContext.TrackVersions.Include("OriginalStorage")
                     .Include("ConvertedStorage")
                     .Include("Lyrics")
                     .Include("Lyrics.Sentences")
@@ -21,7 +22,7 @@ namespace RawSharer.Controllers.WebApi
                     .Include("Track.Album")
                     .Include("Track.Album.Genre")
                     .Include("Track.Album.ImageStorage")
-                    .ToArray();
+                    .ToArrayAsync();
             }
         }
 

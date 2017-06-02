@@ -3,94 +3,93 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using RawSharer.LyricsParser.Models;
+using RawSharer.LyricsParser.Settings;
 using RawSharer.LyricsParser.Utils;
 
 namespace RawSharer.LyricsParser.Parsers
 {
-    public static class LrcParser
+    public class LrcParser
     {
         private static readonly char[] OffsetNexts = { 'f', 'f', 's', 'e', 't' };
         private static readonly StringBuilder TimeBuilder = new StringBuilder(3);
         private static readonly LyricsSentenceComparer Comparer = new LyricsSentenceComparer();
 
+        private LrcParserInnerSettings InnerSettings { get; }
+
         /// <summary>
-        /// Parse Lyrics from LRC-format Lyrics String
+        /// Creates a new parser using default settings.
+        /// </summary>
+        public LrcParser() : this(new LrcParserSettings())
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new parser using custom specified settings.
+        /// </summary>
+        /// <param name="settings">Parser Settings</param>
+        public LrcParser(LrcParserSettings settings)
+        {
+            InnerSettings = new LrcParserInnerSettings(settings);
+        }
+
+        /// <summary>
+        /// Parse lyrics from LRC-format lyrics string.
         /// </summary>
         /// <param name="lrcString">Lyrics String</param>
         /// <returns>Parsed Lyrics</returns>
-        public static ParsedLyrics Parse(string lrcString)
+        public async Task<ParsedLyrics> ParseAsync(string lrcString)
         {
             using (var reader = new StringReader(lrcString))
             {
-                return Parse(reader);
+                return await ParseAsync(reader);
             }
         }
 
         /// <summary>
-        /// Parse Lyrics from LRC-format Lyrics Source Stream
+        /// Parse lyrics from LRC-format lyrics source stream.
         /// </summary>
         /// <param name="lrcStream">Lyrics Source Stream</param>
         /// <returns>Parsed Lyrics</returns>
-        public static ParsedLyrics Parse(Stream lrcStream)
+        public async Task<ParsedLyrics> ParseAsync(Stream lrcStream)
         {
             using (var reader = new StreamReader(lrcStream, Encoding.UTF8, false, 1024, true))
             {
-                return Parse(reader);
+                return await ParseAsync(reader);
             }
         }
 
         /// <summary>
-        /// Parse Lyrics from TextReader
+        /// Parse lyrics from TextReader.
         /// </summary>
         /// <param name="reader">TextReader</param>
         /// <returns>Parsed Lyrics</returns>
-        public static ParsedLyrics Parse(TextReader reader)
+        public async Task<ParsedLyrics> ParseAsync(TextReader reader)
         {
-            try
+            return await Task.Run(() =>
             {
-                var result = new ParsedLyrics();
+                try
+                {
+                    var result = new ParsedLyrics();
 
-                while (ParseLine(result, reader)) { }
+                    while (ParseLine(result, reader))
+                    {
+                    }
 
-                PostProcess(result);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
-            }
+                    if (InnerSettings.PostProcess) PostProcess(result);
+                    return result;
+                }
+                catch (Exception exception)
+                {
+                    throw new ParseException(Resources.ExceptionMessages.GenericFailure, exception);
+                }
+            });
+
         }
 
-        private static void PostProcess(ParsedLyrics lyrics)
-        {
-            lyrics.Sentences.Sort(Comparer);
-
-            var hasOffset = lyrics.OffsetMs != 0;
-            var offset = TimeSpan.FromMilliseconds(lyrics.OffsetMs);
-
-            if (lyrics.Sentences.Count == 0) return;
-            var previous = lyrics.Sentences[0];
-            previous.Sequence = 0;
-            if (hasOffset)
-            {
-                previous.StartTime = previous.StartTime.Add(offset);
-                if (previous.StartTime < TimeSpan.Zero)
-                    throw new ParseException(Resources.ExceptionMessages.InvalidOffset);
-            }
-            for (var i = 1; i < lyrics.Sentences.Count; i++)
-            {
-                var current = lyrics.Sentences[i];
-                current.Sequence = i;
-                if (hasOffset) current.StartTime = current.StartTime.Add(offset);
-
-                previous.EndTime = current.StartTime;
-                previous.Duration = previous.EndTime - previous.StartTime;
-                previous = current;
-            }
-        }
-
-        private static bool ParseLine(ParsedLyrics lyrics, TextReader reader)
+        private bool ParseLine(ParsedLyrics lyrics, TextReader reader)
         {
             var leftBracket = reader.Read();
             if (leftBracket == -1) return false;
@@ -100,7 +99,12 @@ namespace RawSharer.LyricsParser.Parsers
             var firstChar = (char)reader.Read();
             if (firstChar == -1) return false;
             else if (leftBracket == '\n') return true;
-            else if (char.IsDigit(firstChar)) ParseSentence(lyrics, reader, firstChar);
+            else if (char.IsDigit(firstChar))
+            {
+                if (!InnerSettings.MetaDataOnly)
+                    ParseSentence(lyrics, reader, firstChar);
+                else return false;
+            }
             else ParseMetaData(lyrics, reader, firstChar);
             return true;
 
@@ -234,6 +238,34 @@ namespace RawSharer.LyricsParser.Parsers
 
             IgnoreTime:
             return null;
+        }
+
+        private static void PostProcess(ParsedLyrics lyrics)
+        {
+            lyrics.Sentences.Sort(Comparer);
+
+            var hasOffset = lyrics.OffsetMs != 0;
+            var offset = TimeSpan.FromMilliseconds(lyrics.OffsetMs);
+
+            if (lyrics.Sentences.Count == 0) return;
+            var previous = lyrics.Sentences[0];
+            previous.Sequence = 0;
+            if (hasOffset)
+            {
+                previous.StartTime = previous.StartTime.Add(offset);
+                if (previous.StartTime < TimeSpan.Zero)
+                    throw new ParseException(Resources.ExceptionMessages.InvalidOffset);
+            }
+            for (var i = 1; i < lyrics.Sentences.Count; i++)
+            {
+                var current = lyrics.Sentences[i];
+                current.Sequence = i;
+                if (hasOffset) current.StartTime = current.StartTime.Add(offset);
+
+                previous.EndTime = current.StartTime;
+                previous.Duration = previous.EndTime - previous.StartTime;
+                previous = current;
+            }
         }
     }
 }

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\Extension\IStorageExtension.cs" />
     <Compile Include="Entities\EntityBase.cs" />
     <Compile Include="Entities\Core\Extension.cs" />
     <Compile Include="Entities\Library\Album.cs" />

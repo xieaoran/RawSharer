@@ -9,23 +9,21 @@ var RawSharer;
                 var Playing;
                 (function (Playing) {
                     var PlayerState = PlayBack.Utils.PlayerState;
-                    var StateIndicator = (function () {
-                        function StateIndicator(playerIconId, coverImgId) {
-                            this.playerIconFront = $("#" + playerIconId);
-                            this.coverImgFront = $("#" + coverImgId);
+                    class StateIndicator {
+                        constructor(playerIconId, coverImgId) {
+                            this.playerIconFront = $(`#${playerIconId}`);
+                            this.coverImgFront = $(`#${coverImgId}`);
                         }
-                        StateIndicator.prototype.toPlaying = function () {
-                            var _this = this;
+                        toPlaying() {
                             this.coverImgFront.removeClass("animation-paused");
                             this.coverImgFront.addClass("animation-running");
                             this.playerIconFront.removeClass("fa-stop fa-pause animation-running state-switching state-switched");
                             this.playerIconFront.addClass("fa-play animation-running state-switching");
-                            setTimeout(function () {
-                                _this.playerIconFront.removeClass("animation-running state-switching");
+                            setTimeout(() => {
+                                this.playerIconFront.removeClass("animation-running state-switching");
                             }, 400);
-                        };
-                        StateIndicator.prototype.toPaused = function (ended) {
-                            var _this = this;
+                        }
+                        toPaused(ended) {
                             this.playerIconFront.removeClass("fa-play animation-running state-switching");
                             if (ended)
                                 this.toStopped();
@@ -33,22 +31,21 @@ var RawSharer;
                                 this.playerIconFront.addClass("fa-pause animation-running state-switching");
                                 this.coverImgFront.removeClass("animation-running");
                                 this.coverImgFront.addClass("animation-paused");
-                                this.pauseTimeOut = setTimeout(function () {
-                                    _this.playerIconFront.removeClass("animation-running state-switching");
-                                    _this.playerIconFront.addClass("animation-running state-switched");
+                                this.pauseTimeOut = setTimeout(() => {
+                                    this.playerIconFront.removeClass("animation-running state-switching");
+                                    this.playerIconFront.addClass("animation-running state-switched");
                                 }, 400);
                             }
-                        };
-                        StateIndicator.prototype.toStopped = function () {
-                            var _this = this;
+                        }
+                        toStopped() {
                             this.playerIconFront.addClass("fa-stop animation-running state-switching");
                             this.coverImgFront.removeClass("animation-running");
                             this.coverImgFront.addClass("animation-paused");
-                            setTimeout(function () {
-                                _this.coverImgFront.removeClass("animation-running state-switching");
+                            setTimeout(() => {
+                                this.coverImgFront.removeClass("animation-running state-switching");
                             }, 400);
-                        };
-                        StateIndicator.prototype.toSeeking = function (currentState) {
+                        }
+                        toSeeking(currentState) {
                             if (this.pauseTimeOut)
                                 clearTimeout(this.pauseTimeOut);
                             if (currentState === PlayerState.Playing) {
@@ -61,12 +58,11 @@ var RawSharer;
                                 this.playerIconFront.removeClass("fa-stop animation-running state-switching");
                                 this.playerIconFront.addClass("fa-pause animation-running state-switched");
                             }
-                        };
-                        StateIndicator.prototype.attachClick = function (click) {
+                        }
+                        attachClick(click) {
                             this.playerIconFront.click(click);
-                        };
-                        return StateIndicator;
-                    }());
+                        }
+                    }
                     Playing.StateIndicator = StateIndicator;
                 })(Playing = Controls.Playing || (Controls.Playing = {}));
             })(Controls = UI.Controls || (UI.Controls = {}));
