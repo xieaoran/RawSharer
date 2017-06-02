@@ -251,5 +251,9 @@ paket-files/
 .idea/
 *.sln.iml
 
+# Typescript Compilation Results
+/RawSharer/Content/ts/**/*.js
+/RawSharer/Content/ts/**/*.js.map
+
 # Demo Storage
-/RawSharer/Demo/
+/RawSharer/Demo
